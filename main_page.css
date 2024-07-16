@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+html,
+body {
+  background-color: black;
+  color: white;
+  align-self: center;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: "Roboto", Verdana;
+  font-weight: 500;
+}
+
+button {
+  border: solid 2px white;
+  border-radius: 10px;
+  flex-grow: 1;
+  padding: 4px;
+  margin: 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5em;
+  cursor: pointer;
+  background-color: rgb(150, 150, 150);
+}
+
+button:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+input {
+  border: solid 3px cyan;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 1.5em;
+}
+
+button:disabled {
+  border: none;
+  cursor: not-allowed;
+  background-color: rgb(80, 80, 80);
+  color: rgb(40, 40, 40);
+}
+
+#playlistArea {
+  max-height: 25vh;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-y: scroll;
+  border: solid 1px rgb(223, 212, 255);
+  padding: 5px;
+}
+
+.redbox {
+  border: solid 2px rgb(139, 0, 0);
+  padding: 10px;
+}
+
+.flexRowContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.flexColContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#slot1,
+#slot2 {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  border: solid 2px rgb(56, 139, 0);
+  padding: 10px;
+}

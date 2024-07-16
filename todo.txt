@@ -1,0 +1,53 @@
+"https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=" +
+        pageMaxResult +
+        "&pageToken=" +
+        (nextPageToken != null ? nextPageToken : "") +
+        "&playlistId=" +
+        playlistId +
+        "&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4"
+
+https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=50&pageToken=&playlistId=&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4
+
+comparaison = 5 categories ( -> not changed ~> changed)
+    - removed || step 1
+    - KO ~> KO || step 1
+    - OK ~> KO || step 1
+    - KO ~> OK || step 1
+    - OK ~> OK || step 1
+    // - KO -> KO || step 1
+    - new KO || step 2
+    - new OK || step 2
+    // - other ->>>> duplicate video
+
+anomalies:
+    - private  --> video was set to private
+    - "deleted video" --> video was deleted, still in playlist
+    - blocked in current country
+    - duplicate videos
+
+//VISUALS
+background = rows of "missing video" yt icons going left and right alternatively 
+
+///FEATURES
+history file, containing past actions and a allowing quick access to frequently backed playlist
+apikey slot
+manage session saving
+youtube kids?
++++
+automatiser le fait de backup une fois par ...
+rechercher un id sur le web pour identifier vidéo
+
+///PERFORMANCE
+comparison: instead of checking all the new video ides, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
+
+///CODE-CLEANING
+handle some errors, like 404 playlist not found
+use real metadata instead of embeded if possible
+
+
+
+duckduckgo à l'air de mieux marcher que google quand on cherche juste avec un id de vidéo: exemple: 
+en recherchant nslNIKPitMg et 7eGXs1EIfzA sur duckduckgo, j'ai pu trouver deux sites différents de gens qui discutent d'ost et voir qu'il s'agit de l'ost de super paper mario ( et que tout les autres morceaux se sont fait delete as well )
+
+retrieved videos:
+eOS1LUnvdYE - No More What Ifs - Wayback Machine
