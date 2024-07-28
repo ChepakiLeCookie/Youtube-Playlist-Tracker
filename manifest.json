@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Youtube Playlist Tracker",
+  "version": "1.0",
+  "description": "blabla",
+  "permissions": ["activeTab"],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "YTPLT"
+  },
+  "icons": {
+    "48": "icon.png"
+  },
+  "background": {
+    "scripts": ["extension-background-script.js"]
+  }
+}
