@@ -29,9 +29,13 @@ anomalies:
 background = rows of "missing video" yt icons going left and right alternatively 
 
 ///FEATURES
-history file, containing past actions and a allowing quick access to frequently backed playlist
+make it into the app I would use: 
+- have a list of "tracked" playlists. once per day when the app is opened ( or with a button ), all the playlists from this list get a new backup, and a report is created if there are difference. a button also allows for a quick report of anomalies on any given playlist. for qol, next to a playlist, you can see its name, id, date of last backup, number of anomalies. if the most recent comparison report has new KO's, the playlist turns red. if there are anomalies, orange. if nothing, green.
+?history file, containing past actions and a allowing quick access to frequently backed playlist
+clear button next to slots
 apikey slot
 manage session saving
+api requests counter !!!
 youtube kids?
 +++
 automatiser le fait de backup une fois par ...

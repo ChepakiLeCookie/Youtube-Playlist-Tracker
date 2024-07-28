@@ -2,10 +2,27 @@ import { Playlist } from "./Playlist.js";
 import { fetchYoutubePlaylist } from "./playlist_fetching.js";
 import { download } from "./utils.js";
 
+const localStorageTrackedPlaylists = JSON.parse(
+  localStorage.getItem("trackedPlaylists")
+);
+const trackedPlaylists = localStorageTrackedPlaylists
+  ? localStorageTrackedPlaylists
+  : [];
+console.log(trackedPlaylists);
+function processPush() {
+  localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+}
+
+trackedPlaylists.push = function () {
+  Array.prototype.push.apply(this, arguments);
+  processPush();
+};
+
 const debugButton = document.querySelector("#debug");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
 const exportButton = document.querySelector("#export");
+const trackButton = document.querySelector("#track");
 
 const loadButton1 = document.querySelector("#load1");
 const loadButton2 = document.querySelector("#load2");
@@ -72,6 +89,10 @@ csvImportElement.addEventListener("change", async () => {
 
 importButton.addEventListener("click", async () => {
   csvImportElement.click();
+});
+
+trackButton.addEventListener("click", async () => {
+  trackedPlaylists.push(main_playlist);
 });
 
 exportButton.addEventListener("click", async () => {
