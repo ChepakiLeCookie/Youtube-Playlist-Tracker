@@ -1,21 +1,50 @@
 import { Playlist } from "./Playlist.js";
 import { fetchYoutubePlaylist } from "./playlist_fetching.js";
 import { download } from "./utils.js";
+import PlaylistCardElement from "./PlaylistCardElement.js";
+
+window.customElements.define("playlist-card", PlaylistCardElement);
 
 const localStorageTrackedPlaylists = JSON.parse(
   localStorage.getItem("trackedPlaylists")
 );
+const trackedPlaylistsDiv = document.querySelector("#tracked-playlists");
 const trackedPlaylists = localStorageTrackedPlaylists
   ? localStorageTrackedPlaylists
   : [];
-console.log(trackedPlaylists);
-function processPush() {
+
+function untrack(playlistId) {
+  const previousTrackedPlaylists = Array.from(trackedPlaylists);
+  trackedPlaylists.length = 0;
+  while (trackedPlaylistsDiv.firstChild) {
+    trackedPlaylistsDiv.removeChild(trackedPlaylistsDiv.lastChild);
+  }
+  for (var i = 0; i < previousTrackedPlaylists.length; i++) {
+    if (previousTrackedPlaylists[i].id != playlistId)
+      trackedPlaylists.push(previousTrackedPlaylists[i]);
+  }
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+}
+
+function addPlaylistCardElementToDiv(playlist) {
+  const playlistCardElement = new PlaylistCardElement(untrack);
+  playlistCardElement.setAttribute("playlist-title", playlist.title);
+  playlistCardElement.setAttribute("playlist-id", playlist.id);
+  trackedPlaylistsDiv.append(playlistCardElement);
+}
+
+for (var i = 0; i < trackedPlaylists.length; i++) {
+  addPlaylistCardElementToDiv(trackedPlaylists[i]);
+}
+
+function processPush(processedPlaylist) {
+  localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+  addPlaylistCardElementToDiv(processedPlaylist);
 }
 
 trackedPlaylists.push = function () {
   Array.prototype.push.apply(this, arguments);
-  processPush();
+  processPush(arguments[0]);
 };
 
 const debugButton = document.querySelector("#debug");
@@ -143,7 +172,5 @@ compareButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  console.log(main_playlist);
-  console.log(slot1_playlist);
-  console.log(slot2_playlist);
+  localStorage.clear();
 });

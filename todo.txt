@@ -45,6 +45,7 @@ rechercher un id sur le web pour identifier vidéo
 comparison: instead of checking all the new video ides, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
 
 ///CODE-CLEANING
+main page.js qguyvduiqsdbh
 handle some errors, like 404 playlist not found
 use real metadata instead of embeded if possible
 
