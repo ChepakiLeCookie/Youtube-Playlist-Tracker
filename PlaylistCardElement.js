@@ -4,6 +4,9 @@ template.innerHTML = `
       <p class="pl-card-title"></p>
       <p class="pl-card-id"></p>
       <button class="untrack">Stop tracking</button>
+      <style>
+        @import "./main_page.css";
+      </style>
     </div>
 `;
 class PlaylistCardElement extends HTMLElement {
@@ -12,6 +15,9 @@ class PlaylistCardElement extends HTMLElement {
     this.untrack = untrackMethod;
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+    // var style = document.createElement("style");
+    // style.innerHTML = ".the-class-name { property-name: my-value; }";
+    // host.shadowRoot.appendChild(style);
   }
 
   static get observedAttributes() {

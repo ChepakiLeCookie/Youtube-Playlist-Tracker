@@ -67,7 +67,7 @@ export class Playlist {
       previousVideoIds.push(this.items[i].id);
     }
 
-    anomaliesReportString += AnomaliesReportItem.getCsvHeader("\t");
+    anomaliesReportString += AnomaliesReportItem.getCsvHeader("\t") + "\n";
 
     for (var i = 0; i < anomaliesReport.length; i++) {
       anomaliesReportString += anomaliesReport[i].getCsvRow("\t") + "\n";
@@ -145,7 +145,7 @@ export class Playlist {
 
     comparisonReportItems.sort(ComparisonReportItem.compare);
 
-    comparisonReportString += ComparisonReportItem.getCsvHeader("\t");
+    comparisonReportString += ComparisonReportItem.getCsvHeader("\t") + "\n";
 
     for (var i = 0; i < comparisonReportItems.length; i++) {
       comparisonReportString += comparisonReportItems[i].getCsvRow("\t") + "\n";

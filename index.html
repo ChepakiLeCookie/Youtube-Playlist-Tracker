@@ -6,60 +6,62 @@
   </head>
 
   <body>
-    <div class="flexRowContainer">
-      <button id="debug">debug</button>
-      <button id="fetch">Fetch</button>
-      <button id="import">Import</button>
-    </div>
-    <div id="tracked-playlists"></div>
-    <p>
-      test<br />
-      PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g<br />
-      id lov to sing<br />
-      PL_J_-lm9blC7pkTkMp8FJ3oshmEPs_Mbw<br />
-      fav musics<br />
-      PL_J_-lm9blC6miMp7tIokVjEzo-T2vCXF<br />
-    </p>
-    <div class="redbox flexColContainer">
+    <main>
+      <div class="flexRowContainer">
+        <button hidden id="debug">debug</button>
+        <button id="fetch">Fetch</button>
+        <button id="import">Import</button>
+      </div>
+      <p>
+        test<br />
+        PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g<br />
+        id lov to sing<br />
+        PL_J_-lm9blC7pkTkMp8FJ3oshmEPs_Mbw<br />
+        fav musics<br />
+        PL_J_-lm9blC6miMp7tIokVjEzo-T2vCXF<br />
+      </p>
+      <div class="redbox flexColContainer">
+        <input
+          type="text"
+          placeholder="Insert playlist ID"
+          id="playlistIdInput"
+          value="PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g"
+        />
+        <p id="titleArea">title</p>
+        <p id="playlistArea">playlist content</p>
+        <button id="analyse">Analyse</button>
+        <div class="flexRowContainer">
+          <input
+            hidden
+            type="file"
+            id="csvImport"
+            name="csvImport"
+            accept=".csv"
+          />
+          <button id="export">Export</button>
+          <button id="track">Track</button>
+        </div>
+      </div>
+
+      <div class="redbox flexRowContainer" id="compareDiv">
+        <div id="slot1">
+          <button id="load1">load</button>
+          <p id="slot1StateDisplay">Slot 1 empty</p>
+        </div>
+        <div id="slot2">
+          <button id="load2">load</button>
+          <p id="slot2StateDisplay">Slot 2 empty</p>
+        </div>
+      </div>
+      <button id="compare">Compare</button>
       <input
         type="text"
-        placeholder="Insert playlist ID"
-        id="playlistIdInput"
-        value="PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g"
+        placeholder="Insert region indicator"
+        id="regionInput"
+        value="FR"
       />
-      <p id="titleArea">title</p>
-      <p id="playlistArea">playlist content</p>
-      <button id="analyse">Analyse</button>
-      <div class="flexRowContainer">
-        <input
-          hidden
-          type="file"
-          id="csvImport"
-          name="csvImport"
-          accept=".csv"
-        />
-        <button id="export">Export</button>
-        <button id="track">Track</button>
-      </div>
-    </div>
-
-    <div class="redbox flexRowContainer" id="compareDiv">
-      <div id="slot1">
-        <button id="load1">load</button>
-        <p id="slot1StateDisplay">Slot 1 empty</p>
-      </div>
-      <div id="slot2">
-        <button id="load2">load</button>
-        <p id="slot2StateDisplay">Slot 2 empty</p>
-      </div>
-    </div>
-    <button id="compare">Compare</button>
-    <input
-      type="text"
-      placeholder="Insert region indicator"
-      id="regionInput"
-      value="FR"
-    />
+    </main>
+    <aside id="tracked-playlists"></aside>
 
     <script type="module" src="main_page.js"></script>
   </body>
