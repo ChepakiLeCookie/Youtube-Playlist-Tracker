@@ -97,6 +97,7 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
           "none"
         );
       }
+      playlistItemData.addedDate = playlistItemData.addedDate.slice(0, 10);
       playlistItems.push(new PlaylistItem(playlistItemData));
     }
 

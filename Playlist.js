@@ -11,6 +11,17 @@ export class Playlist {
     this.items = items;
   }
 
+  static generateFromJSONObject(JSONObject) {
+    var items = [];
+    for (var i = 0; i < JSONObject.items.length; i++) {
+      items.push(new PlaylistItem(JSONObject.items[i]));
+    }
+    var title = JSONObject.title;
+    var id = JSONObject.id;
+    var date = JSONObject.date;
+    return new Playlist(id, date, title, items);
+  }
+
   static generateFromCsvString(csv) {
     const [csvContent, csvMetadata] = csvStringToObjectArray(csv, "\t");
     var items = [];
