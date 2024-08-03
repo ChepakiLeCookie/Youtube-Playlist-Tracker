@@ -15,30 +15,6 @@ export function download(content, fileName, contentType) {
   a.click();
 }
 
-export function downloadReport(playlist, region) {
-  var anomaliesReport = playlist.getAnomaliesReport(region);
-  download(
-    anomaliesReport,
-    "REPORT_" + playlist.title + "_" + playlist.date + ".csv",
-    "csv"
-  );
-}
-
-export function downloadComparison(playlist1, playlist2, region) {
-  var comparisonReport = playlist1.getComparisonReport(playlist2, region);
-  download(
-    comparisonReport,
-    "COMPARE_" +
-      playlist1.title +
-      "_" +
-      playlist1.date +
-      "||VS||" +
-      playlist2.date +
-      ".csv",
-    "csv"
-  );
-}
-
 export function handleUndefined(handled, backup) {
   return handled != undefined ? handled : backup;
 }

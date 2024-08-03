@@ -1,7 +1,9 @@
 import { Playlist } from "./Playlist.js";
 import { fetchYoutubePlaylist } from "./playlist_fetching.js";
-import { download, downloadComparison, downloadReport } from "./utils.js";
+import { download } from "./utils.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
+import { ComparisonReport } from "./ComparisonReport.js";
+import { AnomaliesReport } from "./AnomaliesReport.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
@@ -55,14 +57,20 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
         playlistId,
         playlistCard.kosElement
       );
-      var newKOsNumber =
-        oldPlaylist
-          .getComparisonReport(newPlaylist, regionInput.value)
-          .split("\n").length - 1;
+      const comparisonReport = new ComparisonReport(
+        oldPlaylist,
+        newPlaylist,
+        regionInput.value
+      );
+      var newKOsNumber = comparisonReport.getCsvString().split("\n").length - 1;
+      const anomaliesReport = new AnomaliesReport(
+        newPlaylist,
+        regionInput.value
+      );
       var anomalies_number =
-        newPlaylist.getAnomaliesReport(regionInput.value).split("\n").length -
-        1;
-      downloadComparison(oldPlaylist, newPlaylist, regionInput.value);
+        anomaliesReport.getCsvString().split("\n").length - 1;
+      newPlaylist.download();
+      comparisonReport.download();
       playlistCard.setAttribute("new-kos-number", newKOsNumber);
       playlistCard.setAttribute("playlist-title", newPlaylist.title);
       playlistCard.setAttribute("backup-date", newPlaylist.date);
@@ -77,7 +85,7 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
 function trackedPlaylistAnalyse(playlistId, playlistCard) {
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
-      downloadReport(trackedPlaylists[i], regionInput.value);
+      new AnomaliesReport(trackedPlaylists[i], regionInput.value).download();
       playlistCard.setAttribute("anomalies-number", "Analysed.");
     }
   }
@@ -101,8 +109,8 @@ function addPlaylistCardElementToDiv(playlist) {
     console.log("Attempt to add card element failed.");
     return;
   }
-  var anomalies_number =
-    playlist.getAnomaliesReport(regionInput.value).split("\n").length - 1;
+  const anomaliesReport = new AnomaliesReport(playlist, regionInput.value);
+  var anomalies_number = anomaliesReport.getCsvString().split("\n").length - 1;
   const playlistCardElement = new PlaylistCardElement(
     trackedPlaylistFetch,
     trackedPlaylistAnalyse,
@@ -195,11 +203,7 @@ trackButton.addEventListener("click", async () => {
 });
 
 exportButton.addEventListener("click", async () => {
-  download(
-    main_playlist.getCsvString(),
-    "BACKUP_" + main_playlist.title + "_" + main_playlist.date + ".csv",
-    "csv"
-  );
+  main_playlist.download();
 });
 
 loadButton1.addEventListener("click", () => {
@@ -215,12 +219,16 @@ loadButton2.addEventListener("click", () => {
 });
 
 analyseButton.addEventListener("click", () => {
-  downloadReport(main_playlist, regionInput.value);
+  new AnomaliesReport(main_playlist, regionInput.value).download();
   slot1StateDisplay.textContent = main_playlist.title + " has been analysed.";
 });
 
 compareButton.addEventListener("click", () => {
-  downloadComparison(slot1_playlist, slot2_playlist, regionInput.value);
+  new ComparisonReport(
+    slot1_playlist,
+    slot2_playlist,
+    regionInput.value
+  ).download();
   slot1StateDisplay.textContent = "Playlists have been compared";
 });
 
