@@ -67,13 +67,12 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
         newPlaylist,
         regionInput.value
       );
-      var newKOsNumber = comparisonReport.getCsvString().split("\n").length - 1;
       const anomaliesReport = new AnomaliesReport(
         newPlaylist,
         regionInput.value
       );
-      var anomalies_number =
-        anomaliesReport.getCsvString().split("\n").length - 1;
+      var newKOsNumber = comparisonReport.getNewKOsNumber();
+      var anomalies_number = anomaliesReport.items.length;
       newPlaylist.download();
       comparisonReport.download();
       playlistCard.setAttribute("new-kos-number", newKOsNumber);
@@ -126,7 +125,7 @@ function addPlaylistCardElementToDiv(playlist) {
   playlistCardElement.setAttribute("playlist-id", playlist.id);
   playlistCardElement.setAttribute("backup-date", playlist.date);
   playlistCardElement.setAttribute("anomalies-number", anomalies_number);
-  playlistCardElement.setAttribute("new-kos-number", "No new KO's");
+  playlistCardElement.setAttribute("new-kos-number", 0);
 
   trackedPlaylistsDiv.append(playlistCardElement);
 }

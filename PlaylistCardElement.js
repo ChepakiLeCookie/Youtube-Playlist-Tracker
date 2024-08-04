@@ -62,6 +62,14 @@ class PlaylistCardElement extends HTMLElement {
     this.anomaliesElement.innerText = this.getAttribute("anomalies-number");
     this.kosElement.innerText = this.getAttribute("new-kos-number");
 
+    this.classList.remove("orange");
+    this.classList.remove("red");
+    if (this.getAttribute("new-kos-number") != "0") {
+      this.classList.add("red");
+    } else if (this.getAttribute("anomalies-number") != "0") {
+      this.classList.add("orange");
+    }
+
     if (this.getAttribute("fetching-state") == "fetching") {
       this.fetchButton.disabled = true;
     } else {

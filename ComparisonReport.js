@@ -80,6 +80,18 @@ export class ComparisonReport {
     this.region = currentRegion;
   }
 
+  getNewKOsNumber() {
+    var newKOsNumber = 0;
+    for (var i = 0; i < this.items.length; i++) {
+      if (
+        this.items[i].comparisonType == "OK ~> KO" ||
+        this.items[i].comparisonType == "new KO"
+      )
+        newKOsNumber++;
+    }
+    return newKOsNumber;
+  }
+
   getCsvString() {
     var csvString = "";
 

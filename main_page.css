@@ -45,6 +45,14 @@ playlist-card {
   border: solid 1px white;
 }
 
+.orange {
+  background-color: rgb(108, 69, 33);
+}
+
+.red {
+  background-color: rgb(104, 32, 32);
+}
+
 button {
   border: solid 2px white;
   border-radius: 10px;
