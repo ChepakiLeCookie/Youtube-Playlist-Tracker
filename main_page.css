@@ -33,6 +33,11 @@ aside {
   background-color: black;
 }
 
+#tracked-playlists {
+  display: flex;
+  flex-direction: column;
+}
+
 playlist-card {
   background-color: rgb(60, 60, 60);
   margin: 5px;

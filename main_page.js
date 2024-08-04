@@ -20,10 +20,15 @@ if (localStorageTrackedPlaylists) {
     );
 }
 
+function updateLocalStorage() {
+  localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+}
+
 // GET HTML ELEMENTS
 
 const regionInput = document.querySelector("#regionInput");
 const trackedPlaylistsDiv = document.querySelector("#tracked-playlists");
+const fetchAllButton = document.querySelector("#fetch-all");
 
 const debugButton = document.querySelector("#debug");
 const fetchButton = document.querySelector("#fetch");
@@ -79,6 +84,7 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
       trackedPlaylists[i] = newPlaylist;
     }
   }
+  updateLocalStorage();
   playlistCard.setAttribute("fetching-state", "done");
 }
 
@@ -101,7 +107,7 @@ function trackedPlaylistUntrack(playlistId) {
     if (previousTrackedPlaylists[i].id != playlistId)
       trackedPlaylists.push(previousTrackedPlaylists[i]);
   }
-  localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+  updateLocalStorage();
 }
 
 function addPlaylistCardElementToDiv(playlist) {
@@ -130,7 +136,7 @@ for (var i = 0; i < trackedPlaylists.length; i++) {
 }
 
 function processPush(processedPlaylist) {
-  localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+  updateLocalStorage();
   addPlaylistCardElementToDiv(processedPlaylist);
 }
 
@@ -230,6 +236,14 @@ compareButton.addEventListener("click", () => {
     regionInput.value
   ).download();
   slot1StateDisplay.textContent = "Playlists have been compared";
+});
+
+fetchAllButton.addEventListener("click", () => {
+  const playlistCards =
+    trackedPlaylistsDiv.getElementsByTagName("playlist-card");
+  for (var i = 0; i < playlistCards.length; i++) {
+    playlistCards[i].fetchButton.click();
+  }
 });
 
 debugButton.addEventListener("click", () => {

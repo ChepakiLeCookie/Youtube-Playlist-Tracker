@@ -77,6 +77,15 @@ export function getFormatedStringDateTime(date) {
   return yyyy + mm + dd + HH + MM;
 }
 
+export function getReadableStringDateTime(formatedDate) {
+  var yyyy = formatedDate.slice(0, 4);
+  var mm = formatedDate.slice(4, 6);
+  var dd = formatedDate.slice(6, 8);
+  var HH = formatedDate.slice(8, 10);
+  var MM = formatedDate.slice(10, 12);
+  return yyyy + "/" + mm + "/" + dd + " at " + HH + "h" + MM;
+}
+
 // generates a row of csv data containing all of the properties of the object. Tabulations necessary as separator for youtube data compatibility
 export function csvRowOf(object, separator) {
   var csvRow = "";

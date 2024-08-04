@@ -1,3 +1,5 @@
+import { getReadableStringDateTime } from "./utils.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
     <div class="playlist-card">
@@ -53,8 +55,10 @@ class PlaylistCardElement extends HTMLElement {
       "Playlist title: " + this.getAttribute("playlist-title");
     this.idElement.innerText =
       "Playlist ID: " + this.getAttribute("playlist-id");
-    this.dateElement.innerText =
-      "Last backup: " + this.getAttribute("backup-date");
+    if (name == "backup-date")
+      this.dateElement.innerText =
+        "Last backup: " +
+        getReadableStringDateTime(this.getAttribute("backup-date"));
     this.anomaliesElement.innerText = this.getAttribute("anomalies-number");
     this.kosElement.innerText = this.getAttribute("new-kos-number");
 
