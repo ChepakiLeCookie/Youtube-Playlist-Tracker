@@ -1,9 +1,9 @@
 import { Playlist } from "./Playlist.js";
 import { fetchYoutubePlaylist } from "./playlist_fetching.js";
-import { download } from "./utils.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
 import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
+import { KOReport } from "./KOReport.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
@@ -12,6 +12,9 @@ window.customElements.define("playlist-card", PlaylistCardElement);
 const localStorageTrackedPlaylists = JSON.parse(
   localStorage.getItem("trackedPlaylists")
 );
+const localStorageKOReports = JSON.parse(localStorage.getItem("KOReports"));
+
+const KOReports = [];
 const trackedPlaylists = [];
 if (localStorageTrackedPlaylists) {
   for (var i = 0; i < localStorageTrackedPlaylists.length; i++)
@@ -19,9 +22,16 @@ if (localStorageTrackedPlaylists) {
       Playlist.generateFromJSONObject(localStorageTrackedPlaylists[i])
     );
 }
+if (localStorageKOReports) {
+  for (var i = 0; i < localStorageKOReports.length; i++)
+    localStorageKOReports.push(
+      Object.assign(new KOReport(), localStorageKOReports[i])
+    );
+}
 
 function updateLocalStorage() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
+  localStorage.setItem("KOReports", JSON.stringify(KOReports));
 }
 
 // GET HTML ELEMENTS

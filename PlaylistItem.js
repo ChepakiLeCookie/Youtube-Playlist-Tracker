@@ -2,16 +2,8 @@ import { csvRowOf, csvHeaderOf } from "./utils.js";
 
 export class PlaylistItem {
   constructor(constructorData) {
-    if (constructorData != undefined) {
-      this.id = constructorData.id;
-      this.title = constructorData.title;
-      this.channelId = constructorData.channelId;
-      this.channelTitle = constructorData.channelTitle;
-      this.position = constructorData.position;
-      this.addedDate = constructorData.addedDate;
-      this.privacyStatus = constructorData.privacyStatus;
-      this.regionsBlocked = constructorData.regionsBlocked;
-    } else {
+    if (constructorData) Object.assign(this, constructorData);
+    else {
       this.id = "n/a";
       this.title = "n/a";
       this.channelId = "n/a";

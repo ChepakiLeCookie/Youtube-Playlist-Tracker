@@ -78,6 +78,7 @@ export class ComparisonReportItem {
           comparisonReportItem.comparisonType = "OK ~> KO";
         else comparisonReportItem.comparisonType = "OK ~> OK";
       }
+      comparisonReportItem.comparisonType += " || " + differencies;
     } else if (oldAvailability != "Available" && newAvailability != "Available")
       comparisonReportItem.comparisonType = "KO -> KO";
     return comparisonReportItem;

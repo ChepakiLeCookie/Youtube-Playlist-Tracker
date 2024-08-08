@@ -10,14 +10,13 @@ export class Playlist {
   }
 
   static generateFromJSONObject(JSONObject) {
-    var items = [];
+    const playlist = new Playlist();
+    Object.assign(playlist, JSONObject);
+    playlist.items = [];
     for (var i = 0; i < JSONObject.items.length; i++) {
-      items.push(new PlaylistItem(JSONObject.items[i]));
+      playlist.items.push(new PlaylistItem(JSONObject.items[i]));
     }
-    var title = JSONObject.title;
-    var id = JSONObject.id;
-    var date = JSONObject.date;
-    return new Playlist(id, date, title, items);
+    return playlist;
   }
 
   static generateFromCsvString(csv) {

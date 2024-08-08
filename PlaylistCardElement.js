@@ -1,23 +1,10 @@
 import { getReadableStringDateTime } from "./utils.js";
 
 const template = document.createElement("template");
-template.innerHTML = `
-    <div class="playlist-card">
-      <p class="pl-card-title"></p>
-      <p class="pl-card-id"></p>
-      <p class="pl-card-date"></p>
-      <div class="flexRowContainer">
-      <button class="fetch">Fetch</button>
-      <button class="analyse">Analyse</button>
-      <button class="untrack">Stop tracking</button>
-      </div>
-      <p class="pl-anomalies-number"></p>
-      <p class="pl-new-KOs-number"></p>
-      <style>
-        @import "./main_page.css";
-      </style>
-    </div>
-`;
+const resp = await fetch("./playlistCardElement.html");
+const html = await resp.text();
+template.innerHTML = html;
+
 class PlaylistCardElement extends HTMLElement {
   constructor(fetchMethod, analyseMethod, untrackMethod) {
     super();
@@ -51,29 +38,43 @@ class PlaylistCardElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this.titleElement.innerText =
-      "Playlist title: " + this.getAttribute("playlist-title");
-    this.idElement.innerText =
-      "Playlist ID: " + this.getAttribute("playlist-id");
-    if (name == "backup-date")
-      this.dateElement.innerText =
-        "Last backup: " +
-        getReadableStringDateTime(this.getAttribute("backup-date"));
-    this.anomaliesElement.innerText = this.getAttribute("anomalies-number");
-    this.kosElement.innerText = this.getAttribute("new-kos-number");
-
-    this.classList.remove("orange");
-    this.classList.remove("red");
-    if (this.getAttribute("new-kos-number") != "0") {
-      this.classList.add("red");
-    } else if (this.getAttribute("anomalies-number") != "0") {
-      this.classList.add("orange");
+    switch (name) {
+      case "playlist-title":
+        this.titleElement.innerText = newValue;
+        break;
+      case "playlist-id":
+        this.idElement.innerText = newValue;
+        this.idElement.setAttribute(
+          "href",
+          "https://www.youtube.com/playlist?list=" + newValue
+        );
+        break;
+      case "backup-date":
+        this.dateElement.innerText =
+          "Last backup: " + getReadableStringDateTime(newValue);
+        break;
+      case "anomalies-number":
+        this.anomaliesElement.innerText = newValue;
+        break;
+      case "new-kos-number":
+        this.kosElement.innerText = newValue;
+        break;
+      case "fetching-state":
+        if (newValue == "fetching") {
+          this.fetchButton.disabled = true;
+        } else {
+          this.fetchButton.disabled = false;
+        }
+        break;
     }
-
-    if (this.getAttribute("fetching-state") == "fetching") {
-      this.fetchButton.disabled = true;
-    } else {
-      this.fetchButton.disabled = false;
+    if (name == "anomalies-number" || name == "new-kos-number") {
+      this.classList.remove("orange");
+      this.classList.remove("red");
+      if (this.getAttribute("new-kos-number") != "0") {
+        this.classList.add("red");
+      } else if (this.getAttribute("anomalies-number") != "0") {
+        this.classList.add("orange");
+      }
     }
   }
 
