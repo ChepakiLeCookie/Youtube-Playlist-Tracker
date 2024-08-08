@@ -35,6 +35,7 @@ main {
 aside {
   /*background-image: url(./background.gif);*/
   background-color: black;
+  display: none;
 }
 
 #tracked-playlists {

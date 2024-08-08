@@ -7,6 +7,36 @@ import { KOReport } from "./KOReport.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
+// GET HTML ELEMENTS
+
+const regionInput = document.querySelector("#regionInput");
+const trackedPlaylistsDiv = document.querySelector("#tracked-playlists");
+const fetchAllButton = document.querySelector("#fetch-all");
+const trackedPlaylistsSection = document.querySelector(
+  "#trackedPlaylistsSection"
+);
+
+const debugButton = document.querySelector("#debug");
+const fetchButton = document.querySelector("#fetch");
+const importButton = document.querySelector("#import");
+const exportButton = document.querySelector("#export");
+const trackButton = document.querySelector("#track");
+
+const loadButton1 = document.querySelector("#load1");
+const loadButton2 = document.querySelector("#load2");
+const compareButton = document.querySelector("#compare");
+
+const slot1StateDisplay = document.querySelector("#slot1StateDisplay");
+const slot2StateDisplay = document.querySelector("#slot2StateDisplay");
+
+const analyseButton = document.querySelector("#analyse");
+
+const csvImportElement = document.querySelector("#csvImport");
+
+const titleArea = document.querySelector("#titleArea");
+const playlistArea = document.querySelector("#playlistArea");
+const playlistIdInput = document.querySelector("#playlistIdInput");
+
 // LOCAL STORAGE
 
 const localStorageTrackedPlaylists = JSON.parse(
@@ -32,34 +62,12 @@ if (localStorageKOReports) {
 function updateLocalStorage() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
   localStorage.setItem("KOReports", JSON.stringify(KOReports));
+  trackedPlaylistsSection.style.display =
+    trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
-// GET HTML ELEMENTS
-
-const regionInput = document.querySelector("#regionInput");
-const trackedPlaylistsDiv = document.querySelector("#tracked-playlists");
-const fetchAllButton = document.querySelector("#fetch-all");
-
-const debugButton = document.querySelector("#debug");
-const fetchButton = document.querySelector("#fetch");
-const importButton = document.querySelector("#import");
-const exportButton = document.querySelector("#export");
-const trackButton = document.querySelector("#track");
-
-const loadButton1 = document.querySelector("#load1");
-const loadButton2 = document.querySelector("#load2");
-const compareButton = document.querySelector("#compare");
-
-const slot1StateDisplay = document.querySelector("#slot1StateDisplay");
-const slot2StateDisplay = document.querySelector("#slot2StateDisplay");
-
-const analyseButton = document.querySelector("#analyse");
-
-const csvImportElement = document.querySelector("#csvImport");
-
-const titleArea = document.querySelector("#titleArea");
-const playlistArea = document.querySelector("#playlistArea");
-const playlistIdInput = document.querySelector("#playlistIdInput");
+trackedPlaylistsSection.style.display =
+  trackedPlaylists.length == 0 ? "none" : "flex";
 
 // GENERATE TRACKING SECTION
 
