@@ -51,6 +51,7 @@ comparison: instead of checking all the new video ides, only checking the "new" 
 ///CODE-CLEANING
 main page.js qguyvduiqsdbh
 handle some errors, like 404 playlist not found
+error: report empty!
 use real metadata instead of embeded if possible
 
 

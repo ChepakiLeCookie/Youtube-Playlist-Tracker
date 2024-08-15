@@ -6,9 +6,9 @@
   </head>
 
   <body>
-    <main>
+    <main id="fetchSection">
       <div class="flexRowContainer">
-        <button hidden id="debug">debug</button>
+        <button id="debug">debug</button>
         <button id="fetch">Fetch</button>
         <button id="import">Import</button>
       </div>
@@ -58,6 +58,30 @@
       <button id="fetch-all">Fetch all</button>
       <div id="tracked-playlists"></div>
       <ul id="KOs-list"></ul>
+    </aside>
+    <aside id="KOSection">
+      <table id="KOTable">
+        <tr>
+          <th>Playlist title</th>
+          <th>Current status</th>
+          <th>Video Title</th>
+          <th>Video ID</th>
+          <th>Channel Title</th>
+          <th>Channel ID</th>
+          <th>Position</th>
+          <th>button</th>
+        </tr>
+        <tr>
+          <td>Margaret Nguyen</td>
+          <td>427311</td>
+          <td><time datetime="2010-06-03">June 3, 2010</time></td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td><button>Dismiss</button></td>
+        </tr>
+      </table>
     </aside>
 
     <script type="module" src="main_page.js"></script>

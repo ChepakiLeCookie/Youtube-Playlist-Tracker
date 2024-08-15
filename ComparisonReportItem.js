@@ -1,14 +1,9 @@
 import { PlaylistItem } from "./PlaylistItem.js";
 
 export class ComparisonReportItem {
-  constructor(
-    comparisonType,
-    currentAvailability,
-    oldPlaylistItem,
-    newPlaylistItem
-  ) {
+  constructor(comparisonType, currentStatus, oldPlaylistItem, newPlaylistItem) {
     this.comparisonType = comparisonType;
-    this.currentAvailability = currentAvailability;
+    this.currentStatus = currentStatus;
     this.oldPlaylistItem = oldPlaylistItem;
     this.newPlaylistItem = newPlaylistItem;
   }
@@ -17,7 +12,7 @@ export class ComparisonReportItem {
     return (
       this.comparisonType +
       separator +
-      this.currentAvailability +
+      this.currentStatus +
       separator +
       this.oldPlaylistItem.getCsvRow(separator) +
       separator +
@@ -29,7 +24,7 @@ export class ComparisonReportItem {
     return (
       "comparisonType" +
       separator +
-      "currentAvailability" +
+      "currentStatus" +
       separator +
       PlaylistItem.getCsvHeader(separator) +
       separator +
@@ -42,9 +37,7 @@ export class ComparisonReportItem {
     if (compare_step != 0) {
       return compare_step;
     }
-    compare_step = itemA.currentAvailability.localeCompare(
-      itemB.currentAvailability
-    );
+    compare_step = itemA.currentStatus.localeCompare(itemB.currentStatus);
     if (compare_step != 0) {
       return compare_step;
     }
@@ -59,27 +52,27 @@ export class ComparisonReportItem {
     newPlaylistItem,
     currentRegion
   ) {
-    var oldAvailability = oldPlaylistItem.getAvailability(currentRegion);
-    var newAvailability = newPlaylistItem.getAvailability(currentRegion);
+    var oldStatus = oldPlaylistItem.getStatus(currentRegion);
+    var newStatus = newPlaylistItem.getStatus(currentRegion);
     var differencies = oldPlaylistItem.getDifferencies(newPlaylistItem);
     var comparisonReportItem = new ComparisonReportItem(
       "OK -> OK",
-      newAvailability,
+      newStatus,
       oldPlaylistItem,
       newPlaylistItem
     );
     if (differencies != "No change") {
-      if (oldAvailability != "Available") {
-        if (newAvailability != "Available")
+      if (oldStatus != "Available") {
+        if (newStatus != "Available")
           comparisonReportItem.comparisonType = "KO ~> KO";
         else comparisonReportItem.comparisonType = "KO ~> OK";
       } else {
-        if (newAvailability != "Available")
+        if (newStatus != "Available")
           comparisonReportItem.comparisonType = "OK ~> KO";
         else comparisonReportItem.comparisonType = "OK ~> OK";
       }
       comparisonReportItem.comparisonType += " || " + differencies;
-    } else if (oldAvailability != "Available" && newAvailability != "Available")
+    } else if (oldStatus != "Available" && newStatus != "Available")
       comparisonReportItem.comparisonType = "KO -> KO";
     return comparisonReportItem;
   }

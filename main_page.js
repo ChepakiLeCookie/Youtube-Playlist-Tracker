@@ -16,6 +16,8 @@ const trackedPlaylistsSection = document.querySelector(
   "#trackedPlaylistsSection"
 );
 
+const KOTable = document.querySelector("#KOTable");
+
 const debugButton = document.querySelector("#debug");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
@@ -54,20 +56,28 @@ if (localStorageTrackedPlaylists) {
 }
 if (localStorageKOReports) {
   for (var i = 0; i < localStorageKOReports.length; i++)
-    localStorageKOReports.push(
-      Object.assign(new KOReport(), localStorageKOReports[i])
-    );
+    KOReports.push(Object.assign(new KOReport(), localStorageKOReports[i]));
 }
 
-function updateLocalStorage() {
+function updateStoredData() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
   localStorage.setItem("KOReports", JSON.stringify(KOReports));
   trackedPlaylistsSection.style.display =
     trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
-trackedPlaylistsSection.style.display =
-  trackedPlaylists.length == 0 ? "none" : "flex";
+updateStoredData();
+
+// INITS
+
+var main_playlist;
+var slot1_playlist;
+var slot2_playlist;
+
+loadButton1.disabled = true;
+loadButton2.disabled = true;
+analyseButton.disabled = true;
+compareButton.disabled = true;
 
 // GENERATE TRACKING SECTION
 
@@ -89,11 +99,14 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
         newPlaylist,
         regionInput.value
       );
-      var newKOsNumber = comparisonReport.getNewKOsNumber();
+      const newKOs = comparisonReport.getNewKOsOnly();
+      for (var i = 0; i < newKOs.length; i++) {
+        KOReports.push(new KOReport(newKOs[i], newPlaylist.title));
+      }
       var anomalies_number = anomaliesReport.items.length;
       newPlaylist.download();
       comparisonReport.download();
-      playlistCard.setAttribute("new-kos-number", newKOsNumber);
+      playlistCard.setAttribute("new-kos-number", newKOs.length);
       playlistCard.setAttribute("playlist-title", newPlaylist.title);
       playlistCard.setAttribute("backup-date", newPlaylist.date);
       playlistCard.setAttribute("anomalies-number", anomalies_number);
@@ -101,7 +114,7 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
       trackedPlaylists[i] = newPlaylist;
     }
   }
-  updateLocalStorage();
+  updateStoredData();
   playlistCard.setAttribute("fetching-state", "done");
 }
 
@@ -124,7 +137,7 @@ function trackedPlaylistUntrack(playlistId) {
     if (previousTrackedPlaylists[i].id != playlistId)
       trackedPlaylists.push(previousTrackedPlaylists[i]);
   }
-  updateLocalStorage();
+  updateStoredData();
 }
 
 function addPlaylistCardElementToDiv(playlist) {
@@ -152,8 +165,8 @@ for (var i = 0; i < trackedPlaylists.length; i++) {
   addPlaylistCardElementToDiv(trackedPlaylists[i]);
 }
 
-function processPush(processedPlaylist) {
-  updateLocalStorage();
+function processPlaylistPush(processedPlaylist) {
+  updateStoredData();
   addPlaylistCardElementToDiv(processedPlaylist);
 }
 
@@ -163,19 +176,33 @@ trackedPlaylists.push = function () {
     return;
   }
   Array.prototype.push.apply(this, arguments);
-  processPush(arguments[0]);
+  processPlaylistPush(arguments[0]);
 };
 
-// INITS
+// GENERATE KOTABLE
 
-var main_playlist;
-var slot1_playlist;
-var slot2_playlist;
+function addKOReportToTable(KOReport) {
+  KOTable.append(KOReport.getHTMLTableRow());
+}
 
-loadButton1.disabled = true;
-loadButton2.disabled = true;
-analyseButton.disabled = true;
-compareButton.disabled = true;
+console.log(KOReports);
+for (var i = 0; i < KOReports.length; i++) {
+  addKOReportToTable(KOReports[i]);
+}
+
+function processKOReportPush(processedKOReport) {
+  updateStoredData();
+  addKOReportToTable(processedKOReport);
+}
+
+KOReports.push = function () {
+  if (!arguments[0]) {
+    console.log("Push failed.");
+    return;
+  }
+  Array.prototype.push.apply(this, arguments);
+  processKOReportPush(arguments[0]);
+};
 
 // EVENT LISTENERS
 
@@ -264,5 +291,5 @@ fetchAllButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  localStorage.clear();
+  KOReports.push(KOReport.getDummy());
 });

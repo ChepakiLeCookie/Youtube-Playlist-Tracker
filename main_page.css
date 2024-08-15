@@ -32,7 +32,7 @@ main {
   overflow-y: auto;
 }
 
-aside {
+#trackedPlaylistsSection {
   /*background-image: url(./background.gif);*/
   background-color: black;
   display: none;

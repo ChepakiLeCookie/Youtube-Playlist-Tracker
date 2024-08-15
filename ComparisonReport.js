@@ -60,7 +60,7 @@ export class ComparisonReport {
       var oldPlaylistItemIndex = oldVideoIds.indexOf(newVideoIds[i]);
 
       if (oldPlaylistItemIndex == -1) {
-        var availabality = newPlaylistItem.getAvailability(currentRegion);
+        var availabality = newPlaylistItem.getStatus(currentRegion);
         comparisonReportItems.push(
           new ComparisonReportItem(
             availabality == "Available" ? "new OK" : "new KO",
@@ -80,16 +80,20 @@ export class ComparisonReport {
     this.region = currentRegion;
   }
 
-  getNewKOsNumber() {
-    var newKOsNumber = 0;
+  getNewKOsOnly() {
+    const newKOs = [];
     for (var i = 0; i < this.items.length; i++) {
       if (
-        this.items[i].comparisonType == "OK ~> KO" ||
-        this.items[i].comparisonType == "new KO"
+        this.items[i].comparisonType.includes("OK ~> KO") ||
+        this.items[i].comparisonType.includes("new KO")
       )
-        newKOsNumber++;
+        newKOs.push(this.items[i]);
     }
-    return newKOsNumber;
+    return newKOs;
+  }
+
+  getNewKOsNumber() {
+    return this.getNewKOsOnly().length;
   }
 
   getCsvString() {
@@ -104,6 +108,7 @@ export class ComparisonReport {
   }
 
   download() {
+    if (this.items.length == 0) return "No items in this report.";
     download(
       this.getCsvString(),
       "COMPARE_" +

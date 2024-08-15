@@ -1,4 +1,4 @@
-import { csvRowOf, csvHeaderOf } from "./utils.js";
+import { csvRowOf, csvHeaderOf, assertArraysEquals } from "./utils.js";
 
 export class PlaylistItem {
   constructor(constructorData) {
@@ -15,7 +15,7 @@ export class PlaylistItem {
     }
   }
 
-  getAvailability(currentRegion) {
+  getStatus(currentRegion) {
     if (this.title == "Private video") return "Private video";
     if (this.title == "Deleted video") return "Deleted video";
     if (this.regionsBlocked.includes(currentRegion))
@@ -29,7 +29,9 @@ export class PlaylistItem {
       differencies += "Title changed, ";
     if (this.channelTitle != otherPlaylistItem.channelTitle)
       differencies += "Channel changed, ";
-    if (this.regionsBlocked != otherPlaylistItem.regionsBlocked)
+    if (
+      !assertArraysEquals(this.regionsBlocked, otherPlaylistItem.regionsBlocked)
+    )
       differencies += "Blocked regions changed, ";
     return differencies != "" ? differencies.slice(0, -2) : "No change";
   }

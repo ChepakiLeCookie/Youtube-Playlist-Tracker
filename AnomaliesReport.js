@@ -12,7 +12,7 @@ export class AnomaliesReport {
           new AnomaliesReportItem("Duplicate video", playlist.items[i])
         );
       } else {
-        var availabality = playlist.items[i].getAvailability(currentRegion);
+        var availabality = playlist.items[i].getStatus(currentRegion);
         if (availabality != "Available") {
           anomaliesReport.push(
             new AnomaliesReportItem(availabality, playlist.items[i])
@@ -39,6 +39,7 @@ export class AnomaliesReport {
   }
 
   download() {
+    if (this.items.length == 0) return "No items in this report.";
     download(
       this.getCsvString(),
       "REPORT_" + this.playlist.title + "_" + this.playlist.date + ".csv",
