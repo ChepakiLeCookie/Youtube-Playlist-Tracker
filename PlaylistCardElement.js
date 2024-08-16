@@ -86,7 +86,7 @@ class PlaylistCardElement extends HTMLElement {
       this.analyse(this.getAttribute("playlist-id"), this);
     });
     this.fetchButton.addEventListener("click", () => {
-      this.fetch(this.getAttribute("playlist-id"), this);
+      this.fetch(this.getAttribute("playlist-id"), this, true);
     });
   }
 

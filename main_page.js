@@ -15,8 +15,11 @@ const fetchAllButton = document.querySelector("#fetch-all");
 const trackedPlaylistsSection = document.querySelector(
   "#trackedPlaylistsSection"
 );
+const downloadReportsButton = document.querySelector("#downloadReports");
+const pendingReportsAmountSpan = document.querySelector("#reportsAmount");
 
 const KOTable = document.querySelector("#KOTable");
+const KOSection = document.querySelector("#KOSection");
 
 const debugButton = document.querySelector("#debug");
 const fetchButton = document.querySelector("#fetch");
@@ -38,6 +41,14 @@ const csvImportElement = document.querySelector("#csvImport");
 const titleArea = document.querySelector("#titleArea");
 const playlistArea = document.querySelector("#playlistArea");
 const playlistIdInput = document.querySelector("#playlistIdInput");
+
+// INITS
+
+const pendingReports = [];
+
+var main_playlist;
+var slot1_playlist;
+var slot2_playlist;
 
 // LOCAL STORAGE
 
@@ -62,31 +73,35 @@ if (localStorageKOReports) {
 function updateStoredData() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
   localStorage.setItem("KOReports", JSON.stringify(KOReports));
+}
+
+// DISPLAY UPDATES
+
+function updatePendingReportsDisplay() {
+  downloadReportsButton.disabled = pendingReports.length == 0;
+  pendingReportsAmountSpan.textContent = pendingReports.length;
+}
+
+function updateTrackedPlaylistDisplay() {
   trackedPlaylistsSection.style.display =
     trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
-updateStoredData();
+function updateKOSectionDisplay() {
+  KOSection.style.display = KOReports.length == 0 ? "none" : "flex";
+}
 
-// INITS
-
-var main_playlist;
-var slot1_playlist;
-var slot2_playlist;
-
-loadButton1.disabled = true;
-loadButton2.disabled = true;
-analyseButton.disabled = true;
-compareButton.disabled = true;
+updateTrackedPlaylistDisplay();
+updateKOSectionDisplay();
 
 // GENERATE TRACKING SECTION
 
-async function trackedPlaylistFetch(playlistId, playlistCard) {
+async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
   playlistCard.setAttribute("fetching-state", "fetching");
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
-      var oldPlaylist = trackedPlaylists[i];
-      var newPlaylist = await fetchYoutubePlaylist(
+      const oldPlaylist = trackedPlaylists[i];
+      const newPlaylist = await fetchYoutubePlaylist(
         playlistId,
         playlistCard.kosElement
       );
@@ -100,12 +115,19 @@ async function trackedPlaylistFetch(playlistId, playlistCard) {
         regionInput.value
       );
       const newKOs = comparisonReport.getNewKOsOnly();
-      for (var i = 0; i < newKOs.length; i++) {
-        KOReports.push(new KOReport(newKOs[i], newPlaylist.title));
+      for (var j = 0; j < newKOs.length; j++) {
+        KOReports.push(new KOReport(newKOs[j], newPlaylist.title));
       }
       var anomalies_number = anomaliesReport.items.length;
-      newPlaylist.download();
-      comparisonReport.download();
+      if (fetchingAll) {
+        if (comparisonReport.items.length != 0)
+          pendingReports.push(comparisonReport);
+        pendingReports.push(newPlaylist);
+        updatePendingReportsDisplay();
+      } else {
+        newPlaylist.download();
+        comparisonReport.download();
+      }
       playlistCard.setAttribute("new-kos-number", newKOs.length);
       playlistCard.setAttribute("playlist-title", newPlaylist.title);
       playlistCard.setAttribute("backup-date", newPlaylist.date);
@@ -138,6 +160,7 @@ function trackedPlaylistUntrack(playlistId) {
       trackedPlaylists.push(previousTrackedPlaylists[i]);
   }
   updateStoredData();
+  updateTrackedPlaylistDisplay();
 }
 
 function addPlaylistCardElementToDiv(playlist) {
@@ -168,6 +191,7 @@ for (var i = 0; i < trackedPlaylists.length; i++) {
 function processPlaylistPush(processedPlaylist) {
   updateStoredData();
   addPlaylistCardElementToDiv(processedPlaylist);
+  updateTrackedPlaylistDisplay();
 }
 
 trackedPlaylists.push = function () {
@@ -175,6 +199,9 @@ trackedPlaylists.push = function () {
     console.log("Push failed.");
     return;
   }
+  console.log(this);
+  console.log(arguments);
+
   Array.prototype.push.apply(this, arguments);
   processPlaylistPush(arguments[0]);
 };
@@ -182,10 +209,14 @@ trackedPlaylists.push = function () {
 // GENERATE KOTABLE
 
 function addKOReportToTable(KOReport) {
-  KOTable.append(KOReport.getHTMLTableRow());
+  const KOReportElement = KOReport.getHTMLTableRow();
+  var indexToRemove = KOReports.length - 1;
+  KOReportElement.querySelector("button").addEventListener("click", () => {
+    dismissKOReport(indexToRemove);
+  });
+  KOTable.append(KOReportElement);
 }
 
-console.log(KOReports);
 for (var i = 0; i < KOReports.length; i++) {
   addKOReportToTable(KOReports[i]);
 }
@@ -193,6 +224,7 @@ for (var i = 0; i < KOReports.length; i++) {
 function processKOReportPush(processedKOReport) {
   updateStoredData();
   addKOReportToTable(processedKOReport);
+  updateKOSectionDisplay();
 }
 
 KOReports.push = function () {
@@ -200,9 +232,25 @@ KOReports.push = function () {
     console.log("Push failed.");
     return;
   }
+  console.log(this);
+  console.log(arguments);
+
   Array.prototype.push.apply(this, arguments);
   processKOReportPush(arguments[0]);
 };
+
+function dismissKOReport(index) {
+  const previousKOReports = Array.from(KOReports);
+  KOReports.length = 0;
+  for (var i = 0; i < previousKOReports.length; i++) {
+    KOTable.removeChild(KOTable.lastChild);
+  }
+  for (var i = 0; i < previousKOReports.length; i++) {
+    if (i != index) KOReports.push(previousKOReports[i]);
+  }
+  updateStoredData();
+  updateKOSectionDisplay();
+}
 
 // EVENT LISTENERS
 
@@ -288,6 +336,14 @@ fetchAllButton.addEventListener("click", () => {
   for (var i = 0; i < playlistCards.length; i++) {
     playlistCards[i].fetchButton.click();
   }
+});
+
+downloadReportsButton.addEventListener("click", () => {
+  for (var i = 0; i < pendingReports.length; i++) {
+    pendingReports[i].download();
+  }
+  pendingReports.length = 0;
+  updatePendingReportsDisplay();
 });
 
 debugButton.addEventListener("click", () => {

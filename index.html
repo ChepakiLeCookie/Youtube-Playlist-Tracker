@@ -22,7 +22,7 @@
         />
         <p id="titleArea">title</p>
         <p id="playlistArea">playlist content</p>
-        <button id="analyse">Analyse</button>
+        <button disabled id="analyse">Analyse</button>
         <div class="flexRowContainer">
           <input
             hidden
@@ -38,15 +38,15 @@
 
       <div class="redbox flexRowContainer" id="compareDiv">
         <div id="slot1">
-          <button id="load1">load</button>
+          <button disabled id="load1">load</button>
           <p id="slot1StateDisplay">Slot 1 empty</p>
         </div>
         <div id="slot2">
-          <button id="load2">load</button>
+          <button disabled id="load2">load</button>
           <p id="slot2StateDisplay">Slot 2 empty</p>
         </div>
       </div>
-      <button id="compare">Compare</button>
+      <button disabled id="compare">Compare</button>
       <input
         type="text"
         placeholder="Insert region indicator"
@@ -55,7 +55,12 @@
       />
     </main>
     <aside id="trackedPlaylistsSection">
-      <button id="fetch-all">Fetch all</button>
+      <div class="flexRowContainer">
+        <button id="fetch-all">Fetch all</button>
+        <button disabled id="downloadReports">
+          Download reports (<span id="reportsAmount">0</span>)
+        </button>
+      </div>
       <div id="tracked-playlists"></div>
       <ul id="KOs-list"></ul>
     </aside>
@@ -70,16 +75,6 @@
           <th>Channel ID</th>
           <th>Position</th>
           <th>button</th>
-        </tr>
-        <tr>
-          <td>Margaret Nguyen</td>
-          <td>427311</td>
-          <td><time datetime="2010-06-03">June 3, 2010</time></td>
-          <td>0.00</td>
-          <td>0.00</td>
-          <td>0.00</td>
-          <td>0.00</td>
-          <td><button>Dismiss</button></td>
         </tr>
       </table>
     </aside>

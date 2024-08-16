@@ -13,6 +13,7 @@ export class PlaylistItem {
       this.privacyStatus = "n/a";
       this.regionsBlocked = "n/a";
     }
+    this.regionsBlocked = this.regionsBlocked.toString(); // No arrays pls
   }
 
   getStatus(currentRegion) {
@@ -29,9 +30,7 @@ export class PlaylistItem {
       differencies += "Title changed, ";
     if (this.channelTitle != otherPlaylistItem.channelTitle)
       differencies += "Channel changed, ";
-    if (
-      !assertArraysEquals(this.regionsBlocked, otherPlaylistItem.regionsBlocked)
-    )
+    if (this.regionsBlocked != otherPlaylistItem.regionsBlocked)
       differencies += "Blocked regions changed, ";
     return differencies != "" ? differencies.slice(0, -2) : "No change";
   }
