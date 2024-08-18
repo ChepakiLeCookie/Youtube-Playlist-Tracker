@@ -1,4 +1,5 @@
 import { Playlist } from "./Playlist.js";
+import { oauthSignIn } from "./authentification.js";
 import { fetchYoutubePlaylist } from "./playlist_fetching.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
 import { ComparisonReport } from "./ComparisonReport.js";
@@ -24,6 +25,7 @@ const KOSection = document.querySelector("#KOSection");
 const displaySection = document.querySelector("#DisplaySection");
 
 const debugButton = document.querySelector("#debug");
+const debugButton2 = document.querySelector("#debug2");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
 const exportButton = document.querySelector("#export");
@@ -349,7 +351,25 @@ downloadReportsButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  displaySection.append(
-    new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable()
+  // displaySection.append(
+  //   new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable()
+  // );
+  // displaySection.style.display = "flex";
+  oauthSignIn();
+});
+
+debugButton2.addEventListener("click", async () => {
+  var accessToken = regionInput.value;
+  var playlistItemId =
+    "UExfSl8tbG05YmxDNV9oS0VKYVRoLUM1ODUwcldnNzdJTS4wMTcyMDhGQUE4NTIzM0Y5";
+  const response = await fetch(
+    "https://youtube.googleapis.com/youtube/v3/playlistItems?id=" +
+      playlistItemId +
+      "&access_token=" +
+      accessToken,
+    { method: "DELETE" }
   );
+  const myJson = await response.json();
+  console.log(response);
+  console.log(myJson);
 });

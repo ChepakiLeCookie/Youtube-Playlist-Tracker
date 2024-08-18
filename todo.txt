@@ -8,6 +8,14 @@
 
 https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=50&pageToken=&playlistId=&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4
 
+https://accounts.google.com/o/oauth2/v2/auth?
+scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube&
+include_granted_scopes=true&
+state=state_parameter_passthrough_value&
+redirect_uri=https://chepakilecookie.github.io/Youtube-Playlist-Tracker&
+response_type=token&
+client_id=116365897040-jmu3p8uo4h677a9ev57uag1fqruq274t.apps.googleusercontent.com
+
 comparaison = 5 categories ( -> not changed ~> changed)
     - removed || step 1
     - KO ~> KO || step 1
@@ -44,6 +52,10 @@ youtube kids?
 +++
 automatiser le fait de backup une fois par ...
 rechercher un id sur le web pour identifier vidéo
+
+//SECURITY
+
+encrypt youtube apikey and client access token 
 
 ///PERFORMANCE
 comparison: instead of checking all the new video ides, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
