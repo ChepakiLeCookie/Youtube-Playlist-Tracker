@@ -1,5 +1,9 @@
 import { PlaylistItem } from "./PlaylistItem.js";
-import { csvStringToObjectArray, download } from "./utils.js";
+import {
+  csvStringToObjectArray,
+  download,
+  HTMLTableHeaderOf,
+} from "./utils.js";
 
 export class Playlist {
   constructor(id, date, title, items) {
@@ -38,20 +42,22 @@ export class Playlist {
     csvString += "#playlistTitle\t" + this.title + "\n";
     csvString += "#date\t" + this.date + "\n";
 
-    var csvHeader = "";
-    for (var key in this.items[0]) {
-      if (Object.prototype.hasOwnProperty.call(this.items[0], key)) {
-        csvHeader += key + "\t";
-      }
-    }
-
-    csvString += csvHeader.slice(0, -1) + "\n";
+    csvString += PlaylistItem.getCsvHeader("\t") + "\n";
 
     for (var i = 0; i < this.items.length; i++) {
       csvString += this.items[i].getCsvRow("\t") + "\n";
     }
 
     return csvString.slice(0, -1);
+  }
+
+  getHTMLTable() {
+    const table = document.createElement("table");
+    table.append(PlaylistItem.getHTMLTableHeader());
+    for (var i = 0; i < this.items.length; i++) {
+      table.append(this.items[i].getHTMLTableRow());
+    }
+    return table;
   }
 
   download() {

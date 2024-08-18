@@ -1,3 +1,5 @@
+import { HTMLTableRowOf } from "./utils.js";
+
 // Simplified comparison report of new KOs
 export class KOReport {
   constructor(comparisonReportItem, playlistTitle) {
@@ -24,16 +26,10 @@ export class KOReport {
   }
 
   getHTMLTableRow() {
-    const tableRow = document.createElement("tr");
-    var content = "";
-    for (var key in this) {
-      if (Object.prototype.hasOwnProperty.call(this, key)) {
-        var val = this[key];
-        content += "<td>" + val + "</td>";
-      }
-    }
-    content += "<td><button>Dismiss</button></td>";
-    tableRow.innerHTML = content;
+    const tableRow = HTMLTableRowOf(this);
+    const dismissButton = document.createElement("button");
+    dismissButton.textContent = "Dismiss";
+    tableRow.append(dismissButton);
     return tableRow;
   }
 }

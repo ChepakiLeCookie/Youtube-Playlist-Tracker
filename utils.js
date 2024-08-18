@@ -111,6 +111,31 @@ export function csvHeaderOf(object, separator) {
   return csvHeader;
 }
 
+export function HTMLTableRowOf(object) {
+  const tableRow = document.createElement("tr");
+  var content = "";
+  for (var key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      var val = object[key];
+      content += "<td>" + val + "</td>";
+    }
+  }
+  tableRow.innerHTML = content;
+  return tableRow;
+}
+
+export function HTMLTableHeaderOf(object) {
+  const tableHeader = document.createElement("tr");
+  var content = "";
+  for (var key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      content += "<th>" + key + "</th>";
+    }
+  }
+  tableHeader.innerHTML = content;
+  return tableHeader;
+}
+
 //true if two arrays contain the same data, same order
 export function assertArraysEquals(array1, array2) {
   if (!array1 || !array2) return false;

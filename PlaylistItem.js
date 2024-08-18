@@ -1,4 +1,9 @@
-import { csvRowOf, csvHeaderOf, assertArraysEquals } from "./utils.js";
+import {
+  csvRowOf,
+  csvHeaderOf,
+  HTMLTableHeaderOf,
+  HTMLTableRowOf,
+} from "./utils.js";
 
 export class PlaylistItem {
   constructor(constructorData) {
@@ -41,5 +46,13 @@ export class PlaylistItem {
 
   static getCsvHeader(separator) {
     return csvHeaderOf(new PlaylistItem(), separator);
+  }
+
+  getHTMLTableRow() {
+    return HTMLTableRowOf(this);
+  }
+
+  static getHTMLTableHeader() {
+    return HTMLTableHeaderOf(new PlaylistItem());
   }
 }

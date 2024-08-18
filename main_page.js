@@ -21,6 +21,8 @@ const pendingReportsAmountSpan = document.querySelector("#reportsAmount");
 const KOTable = document.querySelector("#KOTable");
 const KOSection = document.querySelector("#KOSection");
 
+const displaySection = document.querySelector("#DisplaySection");
+
 const debugButton = document.querySelector("#debug");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
@@ -347,5 +349,7 @@ downloadReportsButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  KOReports.push(KOReport.getDummy());
+  displaySection.append(
+    new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable()
+  );
 });

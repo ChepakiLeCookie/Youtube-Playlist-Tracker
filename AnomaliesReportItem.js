@@ -1,9 +1,27 @@
 import { PlaylistItem } from "./PlaylistItem.js";
+import { HTMLTableHeaderOf } from "./utils.js";
 
 export class AnomaliesReportItem {
   constructor(anomalyType, playlistItem) {
     this.anomalyType = anomalyType;
     this.playlistItem = playlistItem;
+  }
+
+  static compare(itemA, itemB) {
+    var compare_step = itemA.anomalyType.localeCompare(itemB.anomalyType);
+    if (compare_step != 0) {
+      return compare_step;
+    }
+    compare_step = itemA.playlistItem.position
+      .toString()
+      .localeCompare(itemB.playlistItem.position);
+    if (compare_step != 0) {
+      return compare_step;
+    }
+    compare_step = itemA.playlistItem.addedDate.localeCompare(
+      itemB.playlistItem.addedDate
+    );
+    return compare_step;
   }
 
   getCsvRow(separator) {
@@ -14,5 +32,33 @@ export class AnomaliesReportItem {
 
   static getCsvHeader(separator) {
     return "anomalyType" + separator + PlaylistItem.getCsvHeader(separator);
+  }
+
+  getHTMLTableRow() {
+    const tableRow = this.playlistItem.getHTMLTableRow();
+
+    const anomalyTypeCol = document.createElement("tr");
+    anomalyTypeCol.textContent = this.anomalyType;
+    tableRow.prepend(anomalyTypeCol);
+
+    const removeButtonCol = document.createElement("tr");
+    removeButtonCol.innerHTML = "<button>Remove??</button>";
+    tableRow.append(removeButtonCol);
+
+    return tableRow;
+  }
+
+  static getHTMLTableHeader() {
+    const tableHeader = PlaylistItem.getHTMLTableHeader();
+
+    const anomalyTypeCol = document.createElement("th");
+    anomalyTypeCol.textContent = "Anomaly Type";
+    tableHeader.prepend(anomalyTypeCol);
+
+    const removeButtonCol = document.createElement("th");
+    removeButtonCol.textContent = "button";
+    tableHeader.append(removeButtonCol);
+
+    return tableHeader;
   }
 }

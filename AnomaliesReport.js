@@ -22,6 +22,8 @@ export class AnomaliesReport {
       previousVideoIds.push(playlist.items[i].id);
     }
 
+    anomaliesReport.sort(AnomaliesReportItem.compare);
+
     this.playlist = playlist;
     this.region = currentRegion;
     this.items = anomaliesReport;
@@ -36,6 +38,15 @@ export class AnomaliesReport {
       csvString += this.items[i].getCsvRow("\t") + "\n";
     }
     return csvString.slice(0, -1);
+  }
+
+  getHTMLTable() {
+    const table = document.createElement("table");
+    table.append(AnomaliesReportItem.getHTMLTableHeader());
+    for (var i = 0; i < this.items.length; i++) {
+      table.append(this.items[i].getHTMLTableRow());
+    }
+    return table;
   }
 
   download() {
