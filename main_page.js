@@ -369,7 +369,5 @@ debugButton2.addEventListener("click", async () => {
       accessToken,
     { method: "DELETE" }
   );
-  const myJson = await response.json();
   console.log(response);
-  console.log(myJson);
 });
