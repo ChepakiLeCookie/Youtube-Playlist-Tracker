@@ -1,10 +1,9 @@
+import { fetchYoutubePlaylist, oauthSignIn } from "./youtube_api.js";
 import { Playlist } from "./Playlist.js";
-import { oauthSignIn } from "./authentification.js";
-import { fetchYoutubePlaylist } from "./playlist_fetching.js";
-import PlaylistCardElement from "./PlaylistCardElement.js";
 import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
 import { KOReport } from "./KOReport.js";
+import PlaylistCardElement from "./PlaylistCardElement.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
@@ -24,8 +23,11 @@ const KOSection = document.querySelector("#KOSection");
 
 const displaySection = document.querySelector("#DisplaySection");
 
+const apiKeyInput = document.querySelector("#apiKeyInput");
+const authStateArea = document.querySelector("#authStateArea");
+
 const debugButton = document.querySelector("#debug");
-const debugButton2 = document.querySelector("#debug2");
+const connectButton = document.querySelector("#connect");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
 const exportButton = document.querySelector("#export");
@@ -48,21 +50,35 @@ const playlistIdInput = document.querySelector("#playlistIdInput");
 
 // INITS
 
-const pendingReports = [];
-
 var main_playlist;
 var slot1_playlist;
 var slot2_playlist;
 
+const pendingReports = [];
+
+var access_token;
+var api_key;
+var requestAuthParam;
+
+const KOReports = [];
+const trackedPlaylists = [];
+
 // LOCAL STORAGE
+
+access_token = localStorage.getItem("accessToken");
+api_key = localStorage.getItem("apiKey");
+const urlParams = new URLSearchParams(window.location.search);
+var paramToken;
+if ((paramToken = urlParams.get("access_token"))) {
+  access_token = paramToken;
+  localStorage.setItem("accessToken", access_token);
+}
 
 const localStorageTrackedPlaylists = JSON.parse(
   localStorage.getItem("trackedPlaylists")
 );
 const localStorageKOReports = JSON.parse(localStorage.getItem("KOReports"));
 
-const KOReports = [];
-const trackedPlaylists = [];
 if (localStorageTrackedPlaylists) {
   for (var i = 0; i < localStorageTrackedPlaylists.length; i++)
     trackedPlaylists.push(
@@ -77,6 +93,8 @@ if (localStorageKOReports) {
 function updateStoredData() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
   localStorage.setItem("KOReports", JSON.stringify(KOReports));
+  localStorage.setItem("accessToken", access_token);
+  localStorage.setItem("apiKey", api_key);
 }
 
 // DISPLAY UPDATES
@@ -95,8 +113,21 @@ function updateKOSectionDisplay() {
   KOSection.style.display = KOReports.length == 0 ? "none" : "flex";
 }
 
+function updateAuthSectionDisplay() {
+  apiKeyInput.value = api_key;
+  authStateArea.textContent = access_token ? "Connected" : "Not connected";
+}
+
+function updateRequestAuthParam() {
+  requestAuthParam = access_token
+    ? "access_token=" + access_token
+    : "key=" + api_key;
+}
+
 updateTrackedPlaylistDisplay();
 updateKOSectionDisplay();
+updateAuthSectionDisplay();
+updateRequestAuthParam();
 
 // GENERATE TRACKING SECTION
 
@@ -107,7 +138,8 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
       const oldPlaylist = trackedPlaylists[i];
       const newPlaylist = await fetchYoutubePlaylist(
         playlistId,
-        playlistCard.kosElement
+        playlistCard.kosElement,
+        requestAuthParam
       );
       const comparisonReport = new ComparisonReport(
         oldPlaylist,
@@ -258,6 +290,12 @@ function dismissKOReport(index) {
 
 // EVENT LISTENERS
 
+apiKeyInput.addEventListener("input", () => {
+  api_key = apiKeyInput.value;
+  localStorage.setItem("apiKey", api_key);
+  updateRequestAuthParam();
+});
+
 function displayPlaylist(playlist) {
   playlistArea.textContent = playlist.getCsvString();
   titleArea.textContent = playlist.title;
@@ -269,7 +307,8 @@ function displayPlaylist(playlist) {
 fetchButton.addEventListener("click", async () => {
   main_playlist = await fetchYoutubePlaylist(
     playlistIdInput.value,
-    playlistArea
+    playlistArea,
+    requestAuthParam
   );
   displayPlaylist(main_playlist);
 });
@@ -351,23 +390,14 @@ downloadReportsButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  // displaySection.append(
-  //   new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable()
-  // );
-  // displaySection.style.display = "flex";
-  oauthSignIn();
+  displaySection.append(
+    new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable(
+      requestAuthParam
+    )
+  );
+  displaySection.style.display = "flex";
 });
 
-debugButton2.addEventListener("click", async () => {
-  var accessToken = regionInput.value;
-  var playlistItemId =
-    "UExfSl8tbG05YmxDNV9oS0VKYVRoLUM1ODUwcldnNzdJTS41MjE1MkI0OTQ2QzJGNzNG";
-  const response = await fetch(
-    "https://youtube.googleapis.com/youtube/v3/playlistItems?id=" +
-      playlistItemId +
-      "&access_token=" +
-      accessToken,
-    { method: "DELETE" }
-  );
-  console.log(response);
+connectButton.addEventListener("click", async () => {
+  oauthSignIn();
 });

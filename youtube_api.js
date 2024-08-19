@@ -2,19 +2,27 @@ import { Playlist } from "./Playlist.js";
 import { PlaylistItem } from "./PlaylistItem.js";
 import { getFormatedStringDateTime, handleUndefined } from "./utils.js";
 
-const fetchYoutubePlaylistMetadata = async (playlistId) => {
+async function fetchYoutubePlaylistMetadata(playlistId, requestAuthParam) {
   const response = await fetch(
     "https://youtube.googleapis.com/youtube/v3/playlists?part=snippet&id=" +
       playlistId +
-      "&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4"
+      "&" +
+      requestAuthParam
   );
-  const myJson = await response.json();
-  return myJson.items[0].snippet.title;
-};
+  const responseContent = await response.json();
+  return responseContent.items[0].snippet.title;
+}
 
-export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
+export async function fetchYoutubePlaylist(
+  playlistId,
+  operationLogElement,
+  requestAuthParam
+) {
   const pageMaxResult = 50; // capped at 50 by the API
-  const playlistTitle = await fetchYoutubePlaylistMetadata(playlistId);
+  const playlistTitle = await fetchYoutubePlaylistMetadata(
+    playlistId,
+    requestAuthParam
+  );
   const playlistItems = [];
   var nextPageToken = null;
   // Loop that goes through each 50 video "page". Stops when there's no page left.
@@ -22,7 +30,7 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
     var currentPagevideoIDs = "";
     const currentPagevideoPartialData = [];
 
-    operationLogArea.textContent =
+    operationLogElement.textContent =
       "Fetching a page from " +
       playlistTitle +
       ": " +
@@ -35,10 +43,11 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
         (nextPageToken != null ? nextPageToken : "") +
         "&playlistId=" +
         playlistId +
-        "&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4"
+        "&" +
+        requestAuthParam
     );
-    var myJson = await response.json();
-    var playlistItemsJson = myJson.items;
+    var responseContent = await response.json();
+    var playlistItemsJson = responseContent.items;
 
     // Loop that goes through each video of the page, to get all video IDs
     for (var i = 0; i < playlistItemsJson.length; i++) {
@@ -52,10 +61,11 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
       "https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&part=status&maxResults=" +
         pageMaxResult +
         currentPagevideoIDs +
-        "&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4"
+        "&" +
+        requestAuthParam
     );
-    var myJson2 = await response2.json();
-    var playlistItemsJson = myJson2.items;
+    var responseContent2 = await response2.json();
+    var playlistItemsJson = responseContent2.items;
 
     // Loop that goes through each video again, this time retrieving all necessary information and creating playlistItem s
     for (var i = 0, j = 0; j < currentPagevideoPartialData.length; i++, j++) {
@@ -101,7 +111,7 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
       playlistItems.push(new PlaylistItem(playlistItemData));
     }
 
-    nextPageToken = myJson.nextPageToken;
+    nextPageToken = responseContent.nextPageToken;
   } while (nextPageToken != null);
 
   var dateString = getFormatedStringDateTime(new Date());
@@ -114,4 +124,58 @@ export const fetchYoutubePlaylist = async (playlistId, operationLogArea) => {
   );
 
   return playlist;
-};
+}
+
+export function oauthSignIn() {
+  var oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+
+  var form = document.createElement("form");
+  form.setAttribute("method", "GET"); // Send as a GET request.
+  form.setAttribute("action", oauth2Endpoint);
+
+  var params = {
+    client_id:
+      "116365897040-jmu3p8uo4h677a9ev57uag1fqruq274t.apps.googleusercontent.com",
+    redirect_uri: "https://chepakilecookie.github.io/Youtube-Playlist-Tracker",
+    response_type: "token",
+    scope: "https://www.googleapis.com/auth/youtube",
+    include_granted_scopes: "true",
+    state: "pass-through value",
+  };
+
+  for (var p in params) {
+    var input = document.createElement("input");
+    input.setAttribute("type", "hidden");
+    input.setAttribute("name", p);
+    input.setAttribute("value", params[p]);
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+export async function deleteYoutubePlaylistItem(
+  playlistId,
+  videoId,
+  requestAuthParam
+) {
+  var response = await fetch(
+    "https://youtube.googleapis.com/youtube/v3/playlistItems?maxResults=1&playlistId=" +
+      playlistId +
+      "&videoId=" +
+      videoId +
+      "&" +
+      requestAuthParam
+  );
+  const responseContent = await response.json();
+  var playlistItemId = responseContent.items[0].id;
+  response = await fetch(
+    "https://youtube.googleapis.com/youtube/v3/playlistItems?id=" +
+      playlistItemId +
+      "&" +
+      requestAuthParam,
+    { method: "DELETE" }
+  );
+  console.log(response);
+}

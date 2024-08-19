@@ -54,13 +54,13 @@ automatiser le fait de backup une fois par ...
 rechercher un id sur le web pour identifier vidéo
 
 //SECURITY
-
 encrypt youtube apikey and client access token 
 
 ///PERFORMANCE
 comparison: instead of checking all the new video ides, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
 
 ///CODE-CLEANING
+use proxies for localStorage objects https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 main page.js qguyvduiqsdbh
 handle some errors, like 404 playlist not found
 error: report empty!

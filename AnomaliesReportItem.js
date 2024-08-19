@@ -1,5 +1,6 @@
 import { PlaylistItem } from "./PlaylistItem.js";
 import { HTMLTableHeaderOf } from "./utils.js";
+import { deleteYoutubePlaylistItem } from "./youtube_api.js";
 
 export class AnomaliesReportItem {
   constructor(anomalyType, playlistItem) {
@@ -34,7 +35,7 @@ export class AnomaliesReportItem {
     return "anomalyType" + separator + PlaylistItem.getCsvHeader(separator);
   }
 
-  getHTMLTableRow() {
+  getHTMLTableRow(playlistId, requestAuthParam) {
     const tableRow = this.playlistItem.getHTMLTableRow();
 
     const anomalyTypeCol = document.createElement("tr");
@@ -42,7 +43,17 @@ export class AnomaliesReportItem {
     tableRow.prepend(anomalyTypeCol);
 
     const removeButtonCol = document.createElement("tr");
-    removeButtonCol.innerHTML = "<button>Remove??</button>";
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.addEventListener("click", async () => {
+      deleteYoutubePlaylistItem(
+        playlistId,
+        this.playlistItem.id,
+        requestAuthParam
+      );
+      tableRow.remove();
+    });
+    removeButtonCol.append(removeButton);
     tableRow.append(removeButtonCol);
 
     return tableRow;
