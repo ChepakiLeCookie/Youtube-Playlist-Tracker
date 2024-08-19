@@ -67,7 +67,7 @@ const trackedPlaylists = [];
 
 access_token = localStorage.getItem("accessToken");
 api_key = localStorage.getItem("apiKey");
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams = new URLSearchParams(window.location.href);
 var paramToken;
 if ((paramToken = urlParams.get("access_token"))) {
   access_token = paramToken;
