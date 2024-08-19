@@ -361,7 +361,7 @@ debugButton.addEventListener("click", () => {
 debugButton2.addEventListener("click", async () => {
   var accessToken = regionInput.value;
   var playlistItemId =
-    "UExfSl8tbG05YmxDNV9oS0VKYVRoLUM1ODUwcldnNzdJTS4wMTcyMDhGQUE4NTIzM0Y5";
+    "UExfSl8tbG05YmxDNV9oS0VKYVRoLUM1ODUwcldnNzdJTS41MjE1MkI0OTQ2QzJGNzNG";
   const response = await fetch(
     "https://youtube.googleapis.com/youtube/v3/playlistItems?id=" +
       playlistItemId +
