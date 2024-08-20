@@ -117,7 +117,8 @@ export function HTMLTableRowOf(object) {
   for (var key in object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
       var val = object[key];
-      content += "<td>" + val + "</td>";
+      // if(key != "regionsBlocked")
+      content += "<td><div>" + val + "</div></td>";
     }
   }
   tableRow.innerHTML = content;
@@ -148,4 +149,12 @@ export function assertArraysEquals(array1, array2) {
     } else if (array2[i] != array1[i]) return false;
   }
   return true;
+}
+
+export function compareInt(int1, int2) {
+  int1 = parseInt(int1);
+  int2 = parseInt(int2);
+  if (int1 > int2) return 1;
+  if (int2 > int1) return -1;
+  return 0;
 }

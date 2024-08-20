@@ -1,5 +1,5 @@
 import { PlaylistItem } from "./PlaylistItem.js";
-import { HTMLTableHeaderOf } from "./utils.js";
+import { compareInt, HTMLTableHeaderOf } from "./utils.js";
 import { deleteYoutubePlaylistItem } from "./youtube_api.js";
 
 export class AnomaliesReportItem {
@@ -13,9 +13,10 @@ export class AnomaliesReportItem {
     if (compare_step != 0) {
       return compare_step;
     }
-    compare_step = itemA.playlistItem.position
-      .toString()
-      .localeCompare(itemB.playlistItem.position);
+    compare_step = compareInt(
+      itemA.playlistItem.position,
+      itemB.playlistItem.position
+    );
     if (compare_step != 0) {
       return compare_step;
     }
@@ -38,11 +39,11 @@ export class AnomaliesReportItem {
   getHTMLTableRow(playlistId, requestAuthParam) {
     const tableRow = this.playlistItem.getHTMLTableRow();
 
-    const anomalyTypeCol = document.createElement("tr");
+    const anomalyTypeCol = document.createElement("td");
     anomalyTypeCol.textContent = this.anomalyType;
     tableRow.prepend(anomalyTypeCol);
 
-    const removeButtonCol = document.createElement("tr");
+    const removeButtonCol = document.createElement("td");
     const removeButton = document.createElement("button");
     removeButton.textContent = "Remove";
     removeButton.addEventListener("click", async () => {
