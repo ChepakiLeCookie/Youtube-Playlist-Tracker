@@ -8,15 +8,21 @@
   <body>
     <main id="fetchSection">
       <div class="flexRowContainer">
-        <button id="debug">debug</button>
+        <button hidden id="debug">debug</button>
         <button id="connect">Connect</button>
         <button id="fetch">Fetch</button>
         <button id="import">Import</button>
       </div>
-      <div>
+      <div class="flexRowContainer">
+        <input
+          type="text"
+          placeholder="Insert region indicator"
+          id="regionInput"
+          value="FR"
+        />
         <input type="text" placeholder="Insert your API Key" id="apiKeyInput" />
-        <p id="authStateArea"></p>
       </div>
+      <p id="authStateArea"></p>
       <div class="redbox flexColContainer">
         <input
           type="text"
@@ -51,12 +57,6 @@
         </div>
       </div>
       <button disabled id="compare">Compare</button>
-      <input
-        type="text"
-        placeholder="Insert region indicator"
-        id="regionInput"
-        value="FR"
-      />
     </main>
     <aside id="trackedPlaylistsSection">
       <div class="flexRowContainer">

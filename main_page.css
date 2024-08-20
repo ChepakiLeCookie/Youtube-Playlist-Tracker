@@ -25,7 +25,7 @@ main {
   max-height: 100%;
   width: 100%;
   margin: 8px;
-  padding: 5px;
+  padding: 8px;
   max-width: 400px;
   flex-grow: 2;
   display: flex;
@@ -75,11 +75,11 @@ button {
   border: solid 2px white;
   border-radius: 10px;
   flex-grow: 1;
-  padding: 4px;
-  margin: 10px;
+  padding: 3px;
+  margin: 5px;
   text-align: center;
   font-weight: 700;
-  font-size: 1.5em;
+  font-size: 1.3em;
   cursor: pointer;
   background-color: rgb(150, 150, 150);
 }
@@ -94,14 +94,16 @@ button:hover {
 }
 
 input {
-  border: solid 3px cyan;
+  border: solid 2px rgb(101, 255, 255);
+  min-width: 0px;
+  margin: 5px;
   border-radius: 5px;
   font-weight: 900;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 button:disabled {
-  border: none;
+  border: solid 2px rgb(80, 80, 80);
   cursor: not-allowed;
   background-color: rgb(80, 80, 80);
   color: rgb(40, 40, 40);

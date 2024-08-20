@@ -57,6 +57,7 @@ var slot2_playlist;
 const pendingReports = [];
 
 var access_token;
+var token_expiration_date;
 var api_key;
 var requestAuthParam;
 
@@ -65,14 +66,14 @@ const trackedPlaylists = [];
 
 // LOCAL STORAGE
 
-access_token = localStorage.getItem("accessToken");
 api_key = localStorage.getItem("apiKey");
-const urlParams = new URLSearchParams(window.location.href);
-var paramToken;
-if ((paramToken = urlParams.get("access_token"))) {
-  access_token = paramToken;
-  localStorage.setItem("accessToken", access_token);
-}
+access_token = localStorage.getItem("accessToken");
+
+const localStorageExpirationDate = new Date(
+  Date.parse(localStorage.getItem("tokenExpirationDate"))
+);
+if (!isNaN(localStorageExpirationDate))
+  token_expiration_date = localStorageExpirationDate;
 
 const localStorageTrackedPlaylists = JSON.parse(
   localStorage.getItem("trackedPlaylists")
@@ -97,6 +98,25 @@ function updateStoredData() {
   localStorage.setItem("apiKey", api_key);
 }
 
+// URL PARAMS
+
+const urlParams = new URLSearchParams(window.location.href);
+var param;
+if ((param = urlParams.get("access_token"))) {
+  access_token = param;
+  localStorage.setItem("accessToken", access_token);
+}
+if ((param = urlParams.get("expires_in"))) {
+  var expiresIn = param;
+  token_expiration_date = new Date();
+  token_expiration_date.setSeconds(
+    token_expiration_date.getSeconds() + parseInt(expiresIn)
+  );
+  localStorage.setItem("tokenExpirationDate", token_expiration_date);
+}
+
+window.history.replaceState(null, "", window.location.pathname);
+
 // DISPLAY UPDATES
 
 function updatePendingReportsDisplay() {
@@ -115,19 +135,37 @@ function updateKOSectionDisplay() {
 
 function updateAuthSectionDisplay() {
   apiKeyInput.value = api_key;
-  authStateArea.textContent = access_token ? "Connected" : "Not connected";
+  authStateArea.textContent = access_token
+    ? "Connected until: " + token_expiration_date
+    : "Not connected";
+}
+
+function updateMainPlaylistDisplay() {
+  playlistArea.textContent = main_playlist.getCsvString();
+  playlistIdInput.value = main_playlist.id;
+  titleArea.textContent = main_playlist.title;
+  loadButton1.disabled = false;
+  loadButton2.disabled = false;
+  analyseButton.disabled = false;
 }
 
 function updateRequestAuthParam() {
+  if (!token_expiration_date || new Date() > token_expiration_date) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("tokenExpirationDate");
+    access_token = undefined;
+    token_expiration_date = undefined;
+  }
   requestAuthParam = access_token
     ? "access_token=" + access_token
     : "key=" + api_key;
 }
 
+updateRequestAuthParam();
+
 updateTrackedPlaylistDisplay();
 updateKOSectionDisplay();
 updateAuthSectionDisplay();
-updateRequestAuthParam();
 
 // GENERATE TRACKING SECTION
 
@@ -179,8 +217,16 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
 function trackedPlaylistAnalyse(playlistId, playlistCard) {
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
-      new AnomaliesReport(trackedPlaylists[i], regionInput.value).download();
+      const report = new AnomaliesReport(
+        trackedPlaylists[i],
+        regionInput.value
+      );
+      pendingReports.push(report);
+      updatePendingReportsDisplay();
       playlistCard.setAttribute("anomalies-number", "Analysed.");
+      displaySection.replaceChildren(report.getHTMLTable(requestAuthParam));
+      displaySection.style.display = "flex";
+      return;
     }
   }
 }
@@ -296,21 +342,13 @@ apiKeyInput.addEventListener("input", () => {
   updateRequestAuthParam();
 });
 
-function displayPlaylist(playlist) {
-  playlistArea.textContent = playlist.getCsvString();
-  titleArea.textContent = playlist.title;
-  loadButton1.disabled = false;
-  loadButton2.disabled = false;
-  analyseButton.disabled = false;
-}
-
 fetchButton.addEventListener("click", async () => {
   main_playlist = await fetchYoutubePlaylist(
     playlistIdInput.value,
     playlistArea,
     requestAuthParam
   );
-  displayPlaylist(main_playlist);
+  updateMainPlaylistDisplay();
 });
 
 csvImportElement.addEventListener("change", async () => {
@@ -320,7 +358,7 @@ csvImportElement.addEventListener("change", async () => {
     "load",
     () => {
       main_playlist = Playlist.generateFromCsvString(reader.result);
-      displayPlaylist(main_playlist);
+      updateMainPlaylistDisplay();
       if (slot1_playlist == undefined) {
         loadButton1.click();
       } else if (slot2_playlist == undefined) {

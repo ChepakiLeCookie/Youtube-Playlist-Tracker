@@ -44,7 +44,9 @@ export class AnomaliesReport {
     const table = document.createElement("table");
     table.append(AnomaliesReportItem.getHTMLTableHeader());
     for (var i = 0; i < this.items.length; i++) {
-      table.append(this.items[i].getHTMLTableRow(this.playlist.id));
+      table.append(
+        this.items[i].getHTMLTableRow(this.playlist.id, requestAuthParam)
+      );
     }
     return table;
   }

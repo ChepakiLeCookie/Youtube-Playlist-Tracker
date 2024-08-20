@@ -2,9 +2,12 @@ import { Playlist } from "./Playlist.js";
 import { PlaylistItem } from "./PlaylistItem.js";
 import { getFormatedStringDateTime, handleUndefined } from "./utils.js";
 
+const baseAPIurl = "https://youtube.googleapis.com/youtube/v3/";
+
 async function fetchYoutubePlaylistMetadata(playlistId, requestAuthParam) {
   const response = await fetch(
-    "https://youtube.googleapis.com/youtube/v3/playlists?part=snippet&id=" +
+    baseAPIurl +
+      "playlists?part=snippet&id=" +
       playlistId +
       "&" +
       requestAuthParam
@@ -37,7 +40,8 @@ export async function fetchYoutubePlaylist(
       (nextPageToken != null ? nextPageToken : "");
 
     const response = await fetch(
-      "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=" +
+      baseAPIurl +
+        "playlistItems?part=snippet&part=contentDetails&maxResults=" +
         pageMaxResult +
         "&pageToken=" +
         (nextPageToken != null ? nextPageToken : "") +
@@ -52,13 +56,13 @@ export async function fetchYoutubePlaylist(
     // Loop that goes through each video of the page, to get all video IDs
     for (var i = 0; i < playlistItemsJson.length; i++) {
       var playlistItemJson = playlistItemsJson[i];
-      currentPagevideoIDs =
-        currentPagevideoIDs + "&id=" + playlistItemJson.contentDetails.videoId;
+      currentPagevideoIDs += "&id=" + playlistItemJson.contentDetails.videoId;
       currentPagevideoPartialData.push(playlistItemJson);
     }
 
     const response2 = await fetch(
-      "https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&part=status&maxResults=" +
+      baseAPIurl +
+        "videos?part=snippet&part=contentDetails&part=status&maxResults=" +
         pageMaxResult +
         currentPagevideoIDs +
         "&" +
@@ -160,22 +164,41 @@ export async function deleteYoutubePlaylistItem(
   videoId,
   requestAuthParam
 ) {
+  /*
   var response = await fetch(
-    "https://youtube.googleapis.com/youtube/v3/playlistItems?maxResults=1&playlistId=" +
-      playlistId +
-      "&videoId=" +
-      videoId +
-      "&" +
-      requestAuthParam
+    "https://youtube.googleapis.com/youtube/v3/playlistItems?maxResults=1&playlistId=" + playlistId + "&videoId=" + videoId + "&" + requestAuthParam
   );
-  const responseContent = await response.json();
-  var playlistItemId = responseContent.items[0].id;
-  response = await fetch(
-    "https://youtube.googleapis.com/youtube/v3/playlistItems?id=" +
-      playlistItemId +
-      "&" +
-      requestAuthParam,
-    { method: "DELETE" }
-  );
-  console.log(response);
+  This SHOULD be enough, if youtube's api wasn't stupid about deleted and private videos. A simple request on the playlist items of a playlist will return everything, with the deleted/private videos and their IDs, but for some reason requesting ONLY one of those playlist items (by adding videoId=....) will result in a 404 video not found error. So with that, our other option is to go through every playlistItem and get the id of the one corresponding to our video id
+  */
+  var nextPageToken = null;
+  do {
+    var response = await fetch(
+      baseAPIurl +
+        "playlistItems?maxResults=50&part=contentDetails&pageToken=" +
+        (nextPageToken != null ? nextPageToken : "") +
+        "&playlistId=" +
+        playlistId +
+        "&" +
+        requestAuthParam
+    );
+    var responseContent = await response.json();
+    nextPageToken = responseContent.nextPageToken;
+    var playlistItemsJson = responseContent.items;
+
+    for (var i = 0; i < playlistItemsJson.length; i++) {
+      var id = playlistItemsJson[i].contentDetails.videoId;
+      if (id == videoId) {
+        response = await fetch(
+          baseAPIurl +
+            "playlistItems?id=" +
+            playlistItemsJson[i].id +
+            "&" +
+            requestAuthParam,
+          { method: "DELETE" }
+        );
+        console.log(response);
+        return;
+      }
+    }
+  } while (nextPageToken != null);
 }
