@@ -130,7 +130,7 @@ export function HTMLTableHeaderOf(object) {
   var content = "";
   for (var key in object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
-      content += "<th>" + key + "</th>";
+      content += "<th class=" + key + "Col>" + key + "</th>";
     }
   }
   tableHeader.innerHTML = content;

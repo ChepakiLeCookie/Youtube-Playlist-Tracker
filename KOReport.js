@@ -27,9 +27,11 @@ export class KOReport {
 
   getHTMLTableRow() {
     const tableRow = HTMLTableRowOf(this);
+    const buttonCol = document.createElement("td");
     const dismissButton = document.createElement("button");
     dismissButton.textContent = "Dismiss";
-    tableRow.append(dismissButton);
+    buttonCol.append(dismissButton);
+    tableRow.append(buttonCol);
     return tableRow;
   }
 }

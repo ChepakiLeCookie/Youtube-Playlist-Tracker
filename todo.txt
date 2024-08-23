@@ -76,3 +76,7 @@ en recherchant nslNIKPitMg et 7eGXs1EIfzA sur duckduckgo, j'ai pu trouver deux s
 
 retrieved videos:
 eOS1LUnvdYE - No More What Ifs - Wayback Machine
+
+html quirks i discovered while working on this ( and made me lose my mind )
+cant change table cell max-height https://stackoverflow.com/questions/13667941/how-to-set-maximum-height-for-table-cell
+cant change display of <details> element

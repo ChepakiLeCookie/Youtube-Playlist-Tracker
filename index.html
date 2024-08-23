@@ -6,84 +6,111 @@
   </head>
 
   <body>
-    <main id="fetchSection">
-      <div class="flexRowContainer">
-        <button hidden id="debug">debug</button>
-        <button id="connect">Connect</button>
-        <button id="fetch">Fetch</button>
-        <button id="import">Import</button>
-      </div>
-      <div class="flexRowContainer">
-        <input
-          type="text"
-          placeholder="Insert region indicator"
-          id="regionInput"
-          value="FR"
-        />
-        <input type="text" placeholder="Insert your API Key" id="apiKeyInput" />
-      </div>
-      <p id="authStateArea"></p>
-      <div class="redbox flexColContainer">
-        <input
-          type="text"
-          placeholder="Insert playlist ID"
-          id="playlistIdInput"
-          value="PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g"
-        />
-        <p id="titleArea">title</p>
-        <p id="playlistArea">playlist content</p>
-        <button disabled id="analyse">Analyse</button>
-        <div class="flexRowContainer">
-          <input
-            hidden
-            type="file"
-            id="csvImport"
-            name="csvImport"
-            accept=".csv"
-          />
-          <button id="export">Export</button>
-          <button id="track">Track</button>
+    <aside id="startArea">
+      <details open="" id="userSection">
+        <summary>Set-up (API key - Region - Connexion)</summary>
+        <div>
+          <div class="flexRowContainer">
+            <button id="debug">debug</button>
+            <button id="connect">Connect</button>
+          </div>
+          <div class="flexRowContainer">
+            <input
+              type="text"
+              placeholder="Insert region indicator"
+              id="regionInput"
+              value="FR"
+            />
+            <input
+              type="text"
+              placeholder="Insert your API Key"
+              id="apiKeyInput"
+            />
+          </div>
+          <p id="authStateArea"></p>
         </div>
-      </div>
-
-      <div class="redbox flexRowContainer" id="compareDiv">
-        <div id="slot1">
-          <button disabled id="load1">load</button>
-          <p id="slot1StateDisplay">Slot 1 empty</p>
+      </details>
+      <details open="" id="fetchSection">
+        <summary>Get playlists</summary>
+        <div>
+          <div class="flexRowContainer">
+            <button id="fetch">Fetch</button>
+            <button id="import">Import</button>
+          </div>
+          <div class="redbox flexColContainer">
+            <input
+              type="text"
+              placeholder="Insert playlist ID"
+              id="playlistIdInput"
+              value="PLjhsnXT7d1U06QdBtrXc7DOSnNMNow78g"
+            />
+            <p id="titleArea">title</p>
+            <p id="playlistArea">playlist content</p>
+            <button disabled id="analyse">Analyse</button>
+            <div class="flexRowContainer">
+              <input
+                hidden
+                type="file"
+                id="csvImport"
+                name="csvImport"
+                accept=".csv"
+              />
+              <button id="export">Export</button>
+              <button id="track">Track</button>
+            </div>
+          </div>
+          <div class="redbox flexRowContainer" id="compareDiv">
+            <div id="slot1">
+              <button disabled id="load1">load</button>
+              <p id="slot1StateDisplay">Slot 1 empty</p>
+            </div>
+            <div id="slot2">
+              <button disabled id="load2">load</button>
+              <p id="slot2StateDisplay">Slot 2 empty</p>
+            </div>
+          </div>
+          <button disabled id="compare">Compare</button>
         </div>
-        <div id="slot2">
-          <button disabled id="load2">load</button>
-          <p id="slot2StateDisplay">Slot 2 empty</p>
-        </div>
-      </div>
-      <button disabled id="compare">Compare</button>
-    </main>
-    <aside id="trackedPlaylistsSection">
-      <div class="flexRowContainer">
-        <button id="fetch-all">Fetch all</button>
-        <button disabled id="downloadReports">
-          Download reports (<span id="reportsAmount">0</span>)
-        </button>
-      </div>
-      <div id="tracked-playlists"></div>
-      <ul id="KOs-list"></ul>
+      </details>
     </aside>
-    <aside id="KOSection">
-      <table id="KOTable">
-        <tr>
-          <th>Playlist title</th>
-          <th>Current status</th>
-          <th>Video Title</th>
-          <th>Video ID</th>
-          <th>Channel Title</th>
-          <th>Channel ID</th>
-          <th>Position</th>
-          <th>button</th>
-        </tr>
-      </table>
+    <aside id="trackingArea">
+      <details open="" id="trackedPlaylistsSection">
+        <summary>Tracked playlists</summary>
+        <div>
+          <div class="flexRowContainer">
+            <button id="fetch-all">Fetch all</button>
+            <button disabled id="downloadReports">
+              Download reports (<span id="reportsAmount">0</span>)
+            </button>
+          </div>
+          <div id="tracked-playlists"></div>
+          <ul id="KOs-list"></ul>
+        </div>
+      </details>
     </aside>
-    <aside id="DisplaySection"></aside>
-
+    <aside id="displayArea">
+      <details open="" id="KOSection">
+        <summary>New KO's</summary>
+        <div>
+          <table id="KOTable">
+            <tr>
+              <th class="playlistTitleCol">Playlist title</th>
+              <th class="currentStatusCol">Current status</th>
+              <th class="titleCol">Video Title</th>
+              <th class="idCol">Video ID</th>
+              <th class="channelTitleCol">Channel Title</th>
+              <th class="channelIdCol">Channel ID</th>
+              <th class="positionCol">Position</th>
+              <th class="buttonCol">button</th>
+            </tr>
+          </table>
+        </div>
+      </details>
+      <details open="" id="displaySection">
+        <summary>Display</summary>
+        <div></div>
+      </details>
+    </aside>
     <script type="module" src="main_page.js"></script>
   </body>
 </html>

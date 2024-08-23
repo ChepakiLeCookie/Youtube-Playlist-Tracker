@@ -21,7 +21,7 @@ const pendingReportsAmountSpan = document.querySelector("#reportsAmount");
 const KOTable = document.querySelector("#KOTable");
 const KOSection = document.querySelector("#KOSection");
 
-const displaySection = document.querySelector("#DisplaySection");
+const displaySection = document.querySelector("#displaySection");
 
 const apiKeyInput = document.querySelector("#apiKeyInput");
 const authStateArea = document.querySelector("#authStateArea");
@@ -224,7 +224,9 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
       pendingReports.push(report);
       updatePendingReportsDisplay();
       playlistCard.setAttribute("anomalies-number", "Analysed.");
-      displaySection.replaceChildren(report.getHTMLTable(requestAuthParam));
+      displaySection.children[1].replaceChildren(
+        report.getHTMLTable(requestAuthParam)
+      );
       displaySection.style.display = "flex";
       return;
     }
@@ -428,12 +430,7 @@ downloadReportsButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  displaySection.append(
-    new AnomaliesReport(main_playlist, regionInput.value).getHTMLTable(
-      requestAuthParam
-    )
-  );
-  displaySection.style.display = "flex";
+  KOReports.push(KOReport.getDummy());
 });
 
 connectButton.addEventListener("click", async () => {
