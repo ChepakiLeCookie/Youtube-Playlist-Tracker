@@ -117,8 +117,29 @@ export function HTMLTableRowOf(object) {
   for (var key in object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
       var val = object[key];
-      // if(key != "regionsBlocked")
-      content += "<td><div>" + val + "</div></td>";
+      var insideCell;
+      if (key == "id") {
+        insideCell =
+          "<a href=https://youtu.be/" +
+          val +
+          " class=" +
+          key +
+          "Cell>" +
+          val +
+          "</a>";
+      } else if (key == "channelId") {
+        insideCell =
+          "<a href=https://www.youtube.com/channel/" +
+          val +
+          " class=" +
+          key +
+          "Cell>" +
+          val +
+          "</a>";
+      } else {
+        insideCell = "<div class=" + key + "Cell>" + val + "</div>";
+      }
+      content += "<td>" + insideCell + "</td>";
     }
   }
   tableRow.innerHTML = content;
