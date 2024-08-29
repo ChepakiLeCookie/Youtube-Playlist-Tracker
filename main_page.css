@@ -45,11 +45,24 @@ summary {
   text-align: center;
 }
 
-details > div {
-  padding-top: 4px;
+.flexRowContainer,
+.flexColContainer {
   display: flex;
+  gap: 6px;
+}
+
+details > div {
+  padding-top: 6px;
+}
+.flexRowContainer {
+  flex-direction: row;
+}
+.flexColContainer {
   flex-direction: column;
-  gap: 10px;
+}
+.flexRowContainer *,
+.flexColContainer * {
+  flex: 1;
 }
 
 #trackedPlaylistsSection {
@@ -175,21 +188,6 @@ input {
   word-wrap: break-word;
   overflow-y: auto;
   border: solid 1px white;
-}
-
-.flexRowContainer {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  justify-content: center;
-}
-.flexColContainer {
-  display: flex;
-  flex-direction: column;
-}
-.flexRowContainer *,
-.flexColContainer * {
-  flex: 1;
 }
 
 .redbox {
