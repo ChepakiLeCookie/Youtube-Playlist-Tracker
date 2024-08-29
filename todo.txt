@@ -68,7 +68,7 @@ main page.js qguyvduiqsdbh
 handle some errors, like 404 playlist not found
 error: report empty!
 use real metadata instead of embeded if possible
-
+custom elements for tabbles?
 
 
 duckduckgo à l'air de mieux marcher que google quand on cherche juste avec un id de vidéo: exemple: 

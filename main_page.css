@@ -65,11 +65,6 @@ details > div {
   flex: 1;
 }
 
-#trackedPlaylistsSection {
-  /*background-image: url(./background.gif);*/
-  display: none;
-}
-
 #tracked-playlists {
   display: flex;
   flex-direction: column;
@@ -77,13 +72,14 @@ details > div {
 }
 
 #KOSection,
-#displaySection {
+#displaySection,
+#trackedPlaylistsSection,
+#reportsSection {
   display: none;
 }
 
 #KOSection[open],
 #displaySection[open] {
-  display: none;
   min-height: 30%;
 }
 
@@ -103,19 +99,19 @@ td {
   width: 90px;
 }
 .titleCol {
-  width: 130px;
+  width: 160px;
 }
 .positionCol {
-  width: 70px;
+  width: 60px;
 }
 .addedDateCol {
-  width: 90px;
+  width: 80px;
 }
 .privacyStatusCol {
   width: 100px;
 }
 .regionsBlockedCol {
-  width: 130px;
+  width: 105px;
 }
 .idCell,
 .channelIdCell {
@@ -183,7 +179,7 @@ input {
 }
 
 #playlistArea {
-  max-height: 25vh;
+  max-height: 15vh;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-y: auto;
