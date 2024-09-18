@@ -1,4 +1,10 @@
-import { fetchYoutubePlaylist, oauthSignIn } from "./youtube_api.js";
+import {
+  fetchYoutubePlaylist,
+  insertYoutubeVideo,
+  oauthSignIn,
+  replacePlaylistItem,
+  replacePlaylistItemAllPlaylists,
+} from "./youtube_api.js";
 import { Playlist } from "./Playlist.js";
 import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
@@ -24,6 +30,11 @@ const KOTable = document.querySelector("#KOTable");
 
 const reportsSection = document.querySelector("#reportsSection");
 const reportsTable = document.querySelector("#reportsTable");
+
+const replaceSection = document.querySelector("#replaceSection");
+const targetInput = document.querySelector("#targetInput");
+const replacementInput = document.querySelector("#replacementInput");
+const replaceButton = document.querySelector("#replace");
 
 const displaySection = document.querySelector("#displaySection");
 
@@ -124,7 +135,7 @@ window.history.replaceState(null, "", window.location.pathname);
 // DISPLAY UPDATES
 
 function updateTrackedPlaylistDisplay() {
-  trackedPlaylistsSection.style.display =
+  trackedPlaylistsSection.style.display = replaceSection.style.display =
     trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
@@ -466,6 +477,24 @@ fetchAllButton.addEventListener("click", () => {
     trackedPlaylistsDiv.getElementsByTagName("playlist-card");
   for (var i = 0; i < playlistCards.length; i++) {
     playlistCards[i].fetchButton.click();
+  }
+});
+
+replaceButton.addEventListener("click", async () => {
+  var targetId = targetInput.value;
+  var replacementId = replacementInput.value;
+  for (var i = 0; i < trackedPlaylists.length; i++) {
+    const playlist = trackedPlaylists[i];
+    for (var j = 0; j < playlist.items.length; j++) {
+      if (playlist.items[j].id == targetId) {
+        await replacePlaylistItem(
+          playlist.id,
+          targetId,
+          replacementId,
+          requestAuthParam
+        );
+      }
+    }
   }
 });
 

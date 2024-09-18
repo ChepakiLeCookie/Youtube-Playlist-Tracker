@@ -159,11 +159,7 @@ export function oauthSignIn() {
   form.submit();
 }
 
-export async function deleteYoutubePlaylistItem(
-  playlistId,
-  videoId,
-  requestAuthParam
-) {
+async function getPlaylistItemId(playlistId, videoId, requestAuthParam) {
   /*
   var response = await fetch(
     "https://youtube.googleapis.com/youtube/v3/playlistItems?maxResults=1&playlistId=" + playlistId + "&videoId=" + videoId + "&" + requestAuthParam
@@ -188,17 +184,67 @@ export async function deleteYoutubePlaylistItem(
     for (var i = 0; i < playlistItemsJson.length; i++) {
       var id = playlistItemsJson[i].contentDetails.videoId;
       if (id == videoId) {
-        response = await fetch(
-          baseAPIurl +
-            "playlistItems?id=" +
-            playlistItemsJson[i].id +
-            "&" +
-            requestAuthParam,
-          { method: "DELETE" }
-        );
-        console.log(response);
-        return;
+        return playlistItemsJson[i].id;
       }
     }
   } while (nextPageToken != null);
+}
+
+export async function deleteYoutubePlaylistItem(
+  playlistId,
+  videoId,
+  requestAuthParam
+) {
+  var playlistItemId = await getPlaylistItemId(
+    playlistId,
+    videoId,
+    requestAuthParam
+  );
+  var response = await fetch(
+    baseAPIurl + "playlistItems?id=" + playlistItemId + "&" + requestAuthParam,
+    { method: "DELETE" }
+  );
+  console.log(response);
+}
+
+export async function insertYoutubeVideo(
+  playlistId,
+  videoId,
+  requestAuthParam
+) {
+  var body = {
+    snippet: {
+      playlistId,
+      resourceId: {
+        kind: "youtube#video",
+        videoId,
+      },
+    },
+  };
+  var response = await fetch(
+    baseAPIurl + "playlistItems?part=snippet&" + requestAuthParam,
+    { method: "POST", body: JSON.stringify(body) }
+  );
+  console.log(response);
+}
+
+export async function replacePlaylistItem(
+  playlistId,
+  targetVideoId,
+  replacementVideoId,
+  requestAuthParam
+) {
+  // check if: old/new video exists, playlist exists, check insert succeeds before delete
+  await insertYoutubeVideo(playlistId, replacementVideoId, requestAuthParam);
+  await deleteYoutubePlaylistItem(playlistId, targetVideoId, requestAuthParam);
+}
+
+export async function replacePlaylistItemAllPlaylists(
+  playlistId,
+  targetVideoId,
+  replacementVideoId,
+  requestAuthParam
+) {
+  await insertYoutubeVideo(playlistId, replacementVideoId, requestAuthParam);
+  await deleteYoutubePlaylistItem(playlistId, targetVideoId, requestAuthParam);
 }

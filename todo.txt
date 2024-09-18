@@ -40,14 +40,13 @@ background = rows of "missing video" yt icons going left and right alternatively
 
 ///FEATURES
 tooltips for buttons
+region selector
 user guide
-dont download empty reports ( instead display message saying nothing) 
 add region used to reports metadata
-make it into the app I would use: 
-- have a list of "tracked" playlists. once per day when the app is opened ( or with a button ), all the playlists from this list get a new backup, and a report is created if there are difference. a button also allows for a quick report of anomalies on any given playlist. for qol, next to a playlist, you can see its name, id, date of last backup, number of anomalies. if the most recent comparison report has new KO's, the playlist turns red. if there are anomalies, orange. if nothing, green.
-?history file, containing past actions and a allowing quick access to frequently backed playlist
+visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
++ log of API errors and other usefullnotificatons, like empty reports, etc..
+make videos that go from "blocked" to "deleted" into new KO reports?? idk how to make sense of that
 clear button next to slots
-apikey slot
 manage session saving
 api requests counter !!!
 youtube kids?
@@ -71,7 +70,7 @@ use real metadata instead of embeded if possible
 custom elements for tabbles?
 
 
-duckduckgo à l'air de mieux marcher que google quand on cherche juste avec un id de vidéo: exemple: 
+duckduckgo à l'air de VRAIMENT mieux marcher que google quand on cherche juste avec un id de vidéo: exemple: 
 en recherchant nslNIKPitMg et 7eGXs1EIfzA sur duckduckgo, j'ai pu trouver deux sites différents de gens qui discutent d'ost et voir qu'il s'agit de l'ost de super paper mario ( et que tout les autres morceaux se sont fait delete as well )
 
 retrieved videos:

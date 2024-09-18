@@ -1,2 +1,0 @@
-Response { type: "cors", url: "https://youtube.googleapis.com/youtube/v3/playlistItems?id=UExfSl8tbG05YmxDNV9oS0VKYVRoLUM1ODUwcldnNzdJTS41MjE1MkI0OTQ2QzJGNzNG&access_token=ya29.a0AcM612xIt1gCjhYgUZ0rM8V11S-ycqennZNQ7CyQu1jaCqUaaimVGUeSxASBEVDqaziXFzNwGMEAx8UV3o0KxoF-xCbtG6WzLsJoZSLiJlWRbNSpIbtlRfdvtYcxNfSuDwT9vkUMEPQOAM3b2zIqicFYI5DPPOBsFOsaCgYKAWcSARMSFQHGX2MiPZujy5mvsCJBbJFEV-U5xw0170", redirected: false, status: 204, ok: true, statusText: "", headers: Headers(5), body: ReadableStream, bodyUsed: false }
-main_page.js:372:11
