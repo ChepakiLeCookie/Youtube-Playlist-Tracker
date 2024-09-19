@@ -63,11 +63,12 @@ comparison: instead of checking all the new video ides, only checking the "new" 
 ///CODE-CLEANING
 use proxies for localStorage objects https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 make someone check the usage of localstorage in general; how to handle undefined/null values?
+custom elements for tabbles?
+RAAAH: find better solution for displayed/stored "live" data like KOtable and tracked playlists
 main page.js qguyvduiqsdbh
 handle some errors, like 404 playlist not found
 error: report empty!
 use real metadata instead of embeded if possible
-custom elements for tabbles?
 
 
 duckduckgo à l'air de VRAIMENT mieux marcher que google quand on cherche juste avec un id de vidéo: exemple: 

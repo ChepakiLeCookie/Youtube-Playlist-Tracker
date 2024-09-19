@@ -305,9 +305,9 @@ trackedPlaylists.push = function () {
 
 // GENERATE KOTABLE
 
-function addKOReportToTable(KOReport) {
+function addKOReportToTable(KOReport, i) {
   const KOReportElement = KOReport.getHTMLTableRow();
-  var indexToRemove = KOReports.length - 1;
+  var indexToRemove = i ? i : KOReports.length - 1;
   KOReportElement.querySelector("button").addEventListener("click", () => {
     dismissKOReport(indexToRemove);
   });
@@ -315,7 +315,7 @@ function addKOReportToTable(KOReport) {
 }
 
 for (var i = 0; i < KOReports.length; i++) {
-  addKOReportToTable(KOReports[i]);
+  addKOReportToTable(KOReports[i], i);
 }
 
 function processKOReportPush(processedKOReport) {
@@ -507,7 +507,9 @@ downloadReportsButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-  KOReports.push(KOReport.getDummy());
+  var dummy = KOReport.getDummy();
+  dummy.playlistTitle = KOReports.length;
+  KOReports.push(dummy);
 });
 
 connectButton.addEventListener("click", async () => {
