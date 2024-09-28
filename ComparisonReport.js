@@ -111,6 +111,16 @@ export class ComparisonReport {
     return csvString.slice(0, -1);
   }
 
+  getHTMLTable() {
+    const table = document.createElement("table");
+    table.append(ComparisonReportItem.getHTMLTableHeader());
+    for (var i = 0; i < this.items.length && i < 500; i++) {
+      table.append(this.items[i].getHTMLTableRow());
+      console.log(this.items[i].getHTMLTableRow());
+    }
+    return table;
+  }
+
   download() {
     if (this.items.length == 0) return "No items in this report.";
     download(

@@ -84,8 +84,6 @@ details > div {
 }
 
 table {
-  table-layout: fixed;
-  width: 1000px;
   font-size: 14px;
 }
 th,
@@ -95,32 +93,38 @@ td {
   padding: 2px;
 }
 
-.idCol {
+.idCell {
   width: 90px;
 }
-.titleCol {
+.titleCell {
   width: 160px;
 }
-.positionCol {
-  width: 60px;
+.channelIdCell {
+  width: 91px;
 }
-.addedDateCol {
-  width: 80px;
-}
-.privacyStatusCol {
+.channelTitleCell {
   width: 100px;
 }
-.regionsBlockedCol {
+.positionCell {
+  width: 60px;
+}
+.addedDateCell {
+  width: 80px;
+}
+.privacyStatusCell {
+  width: 100px;
+}
+.regionsBlockedCell {
   width: 105px;
 }
 .idCell,
 .channelIdCell {
   font-size: 12px;
-  word-break: break-all;
 }
 td > a {
   color: #bff;
   text-decoration-line: none;
+  display: block;
 }
 td > a:hover {
   color: #5ff;

@@ -177,6 +177,13 @@ function updateRequestAuthParam() {
     : "key=" + api_key;
 }
 
+function displayReport(report) {
+  displaySection.children[1].replaceChildren(
+    report.getHTMLTable(requestAuthParam)
+  );
+  displaySection.style.display = "flex";
+}
+
 updateRequestAuthParam();
 
 updateTrackedPlaylistDisplay();
@@ -240,10 +247,7 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
       pendingReports.push(report);
       updateReportsSectionDisplay();
       playlistCard.setAttribute("anomalies-number", "Analysed.");
-      displaySection.children[1].replaceChildren(
-        report.getHTMLTable(requestAuthParam)
-      );
-      displaySection.style.display = "flex";
+      displayReport(report);
       return;
     }
   }
@@ -368,6 +372,15 @@ function addReportToTable(report) {
 
   const reportRowObject = { type, playlistTitle, playlistId };
   const reportRowElement = HTMLTableRowOf(reportRowObject);
+
+  const displayButtonCol = document.createElement("td");
+  const displayButton = document.createElement("button");
+  displayButton.textContent = "Display";
+  displayButton.addEventListener("click", async () => {
+    displayReport(report);
+  });
+  displayButtonCol.append(displayButton);
+  reportRowElement.append(displayButtonCol);
 
   const downloadButtonCol = document.createElement("td");
   const downloadButton = document.createElement("button");
