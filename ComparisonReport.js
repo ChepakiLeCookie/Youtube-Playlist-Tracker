@@ -85,8 +85,12 @@ export class ComparisonReport {
     for (var i = 0; i < this.items.length; i++) {
       if (
         this.items[i].comparisonType.includes("OK ~> KO") ||
-        this.items[i].comparisonType.includes("new KO")
+        this.items[i].comparisonType.includes("new KO") ||
+        (this.items[i].comparisonType.includes("Title changed") &&
+          (this.items[i].currentStatus == "Deleted video" ||
+            this.items[i].currentStatus == "Private video"))
       )
+        // the last check gets videos that were already KOs but had their info still available
         newKOs.push(this.items[i]);
     }
     return newKOs;
