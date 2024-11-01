@@ -47,7 +47,7 @@ export class AnomaliesReportItem {
     const removeButton = document.createElement("button");
     removeButton.textContent = "Remove";
     removeButton.addEventListener("click", async () => {
-      deleteYoutubePlaylistItem(
+      await deleteYoutubePlaylistItem(
         playlistId,
         this.playlistItem.id,
         requestAuthParam

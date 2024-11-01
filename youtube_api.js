@@ -1,6 +1,10 @@
 import { Playlist } from "./Playlist.js";
 import { PlaylistItem } from "./PlaylistItem.js";
-import { getFormatedStringDateTime, handleUndefined } from "./utils.js";
+import {
+  getFormatedStringDateTime,
+  handleAPIresponse,
+  handleUndefined,
+} from "./utils.js";
 
 const baseAPIurl = "https://youtube.googleapis.com/youtube/v3/";
 
@@ -11,6 +15,10 @@ async function fetchYoutubePlaylistMetadata(playlistId, requestAuthParam) {
       playlistId +
       "&" +
       requestAuthParam
+  );
+  handleAPIresponse(
+    response,
+    "Playlist wasn't found: " + JSON.stringify(response.json())
   );
   const responseContent = await response.json();
   return responseContent.items[0].snippet.title;
@@ -178,6 +186,11 @@ async function getPlaylistItemId(playlistId, videoId, requestAuthParam) {
         requestAuthParam
     );
     var responseContent = await response.json();
+    handleAPIresponse(
+      response,
+      "Video wasn't found: " + JSON.stringify(responseContent)
+    );
+
     nextPageToken = responseContent.nextPageToken;
     var playlistItemsJson = responseContent.items;
 
@@ -204,7 +217,11 @@ export async function deleteYoutubePlaylistItem(
     baseAPIurl + "playlistItems?id=" + playlistItemId + "&" + requestAuthParam,
     { method: "DELETE" }
   );
-  console.log(response);
+  handleAPIresponse(
+    response,
+    "Video couldn't be removed from playlist: " +
+      JSON.stringify(response.json())
+  );
 }
 
 export async function insertYoutubeVideo(
@@ -225,7 +242,10 @@ export async function insertYoutubeVideo(
     baseAPIurl + "playlistItems?part=snippet&" + requestAuthParam,
     { method: "POST", body: JSON.stringify(body) }
   );
-  console.log(response);
+  handleAPIresponse(
+    response,
+    "Video couldn't be added from playlist: " + JSON.stringify(response.json())
+  );
 }
 
 export async function replacePlaylistItem(
@@ -234,17 +254,7 @@ export async function replacePlaylistItem(
   replacementVideoId,
   requestAuthParam
 ) {
-  // check if: old/new video exists, playlist exists, check insert succeeds before delete
-  await insertYoutubeVideo(playlistId, replacementVideoId, requestAuthParam);
-  await deleteYoutubePlaylistItem(playlistId, targetVideoId, requestAuthParam);
-}
-
-export async function replacePlaylistItemAllPlaylists(
-  playlistId,
-  targetVideoId,
-  replacementVideoId,
-  requestAuthParam
-) {
+  // todo: old/new video exists
   await insertYoutubeVideo(playlistId, replacementVideoId, requestAuthParam);
   await deleteYoutubePlaylistItem(playlistId, targetVideoId, requestAuthParam);
 }

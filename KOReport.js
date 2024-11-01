@@ -14,6 +14,7 @@ export class KOReport {
   }
 
   static getDummy() {
+    globalThis.appLog.log("bitch!!!!");
     var dummy = new KOReport();
     dummy.playlistTitle = "TITRE";
     dummy.currentStatus = "comparisonReportItem.currentStatus";

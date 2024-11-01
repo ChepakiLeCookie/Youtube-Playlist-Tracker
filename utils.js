@@ -179,3 +179,9 @@ export function compareInt(int1, int2) {
   if (int2 > int1) return -1;
   return 0;
 }
+
+export function handleAPIresponse(response, errorMessage) {
+  if (response.status < 200 || response.status > 299) {
+    throw new Error(globalThis.appLog.log(errorMessage));
+  }
+}

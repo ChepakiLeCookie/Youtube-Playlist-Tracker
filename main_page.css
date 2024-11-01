@@ -71,6 +71,11 @@ details > div {
   gap: 6px;
 }
 
+#logSection,
+#reportsSection {
+  max-height: 30%;
+}
+
 #KOSection,
 #displaySection,
 #trackedPlaylistsSection,

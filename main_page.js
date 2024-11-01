@@ -1,9 +1,7 @@
 import {
   fetchYoutubePlaylist,
-  insertYoutubeVideo,
   oauthSignIn,
   replacePlaylistItem,
-  replacePlaylistItemAllPlaylists,
 } from "./youtube_api.js";
 import { Playlist } from "./Playlist.js";
 import { ComparisonReport } from "./ComparisonReport.js";
@@ -11,6 +9,7 @@ import { AnomaliesReport } from "./AnomaliesReport.js";
 import { KOReport } from "./KOReport.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
 import { HTMLTableRowOf } from "./utils.js";
+import { AppLog } from "./AppLog.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
@@ -30,6 +29,9 @@ const KOTable = document.querySelector("#KOTable");
 
 const reportsSection = document.querySelector("#reportsSection");
 const reportsTable = document.querySelector("#reportsTable");
+
+const logSection = document.querySelector("#logSection");
+const logDiv = document.querySelector("#logDiv");
 
 const replaceSection = document.querySelector("#replaceSection");
 const targetInput = document.querySelector("#targetInput");
@@ -78,6 +80,9 @@ var requestAuthParam;
 
 const KOReports = [];
 const trackedPlaylists = [];
+
+const appLog = new AppLog(logDiv);
+globalThis.appLog = appLog;
 
 // LOCAL STORAGE
 
@@ -265,6 +270,7 @@ function trackedPlaylistUntrack(playlistId) {
   }
   updateStoredData();
   updateTrackedPlaylistDisplay();
+  globalThis.appLog.log("Stopped tracking playlist " + playlistId);
 }
 
 function addPlaylistCardElementToDiv(playlist) {
@@ -348,6 +354,10 @@ function dismissKOReport(index) {
   }
   updateStoredData();
   updateKOSectionDisplay();
+
+  globalThis.appLog.log(
+    "Dismissed KOReport: " + JSON.stringify(previousKOReports[index])
+  );
 }
 
 // GENERATE REPORTSTABLE
@@ -494,6 +504,7 @@ fetchAllButton.addEventListener("click", () => {
 });
 
 replaceButton.addEventListener("click", async () => {
+  replaceButton.disabled = true;
   var targetId = targetInput.value;
   var replacementId = replacementInput.value;
   for (var i = 0; i < trackedPlaylists.length; i++) {
@@ -509,6 +520,7 @@ replaceButton.addEventListener("click", async () => {
       }
     }
   }
+  replaceButton.disabled = false;
 });
 
 downloadReportsButton.addEventListener("click", () => {

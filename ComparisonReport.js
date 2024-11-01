@@ -116,7 +116,6 @@ export class ComparisonReport {
     table.append(ComparisonReportItem.getHTMLTableHeader());
     for (var i = 0; i < this.items.length && i < 500; i++) {
       table.append(this.items[i].getHTMLTableRow());
-      console.log(this.items[i].getHTMLTableRow());
     }
     return table;
   }

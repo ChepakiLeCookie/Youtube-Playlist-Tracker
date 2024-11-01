@@ -39,6 +39,7 @@ anomalies:
 background = rows of "missing video" yt icons going left and right alternatively 
 
 ///FEATURES
+"update all" button for the new KO reports -> checks every video and their playlist to see if 1: video is still in playlist or 2: video is still KO
 tooltips for buttons
 region selector
 user guide
@@ -66,7 +67,8 @@ make someone check the usage of localstorage in general; how to handle undefined
 custom elements for tabbles?
 RAAAH: find better solution for displayed/stored "live" data like KOtable and tracked playlists
 main page.js qguyvduiqsdbh
-handle some errors, like 404 playlist not found
+(properly) handle errors
+error : playlist not found
 error: report empty!
 use real metadata instead of embeded if possible
 ...make it typescript? probably good idea
