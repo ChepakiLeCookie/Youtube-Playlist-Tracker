@@ -1,5 +1,5 @@
 import { PlaylistItem } from "./PlaylistItem.js";
-import { compareInt, HTMLTableHeaderOf } from "./utils.js";
+import { compareInt } from "./utils.js";
 import { deleteYoutubePlaylistItem } from "./youtube_api.js";
 
 export class AnomaliesReportItem {
