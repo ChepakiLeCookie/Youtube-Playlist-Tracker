@@ -16,11 +16,11 @@ async function fetchYoutubePlaylistMetadata(playlistId, requestAuthParam) {
       "&" +
       requestAuthParam
   );
+  const responseContent = await response.json();
   handleAPIresponse(
     response,
-    "Playlist wasn't found: " + JSON.stringify(response.json())
+    "Playlist wasn't found: " + JSON.stringify(responseContent)
   );
-  const responseContent = await response.json();
   return responseContent.items[0].snippet.title;
 }
 
@@ -220,7 +220,7 @@ export async function deleteYoutubePlaylistItem(
   handleAPIresponse(
     response,
     "Video couldn't be removed from playlist: " +
-      JSON.stringify(response.json())
+      JSON.stringify(await response.json())
   );
 }
 
@@ -244,7 +244,8 @@ export async function insertYoutubeVideo(
   );
   handleAPIresponse(
     response,
-    "Video couldn't be added from playlist: " + JSON.stringify(response.json())
+    "Video couldn't be added from playlist: " +
+      JSON.stringify(await response.json())
   );
 }
 
