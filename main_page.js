@@ -37,6 +37,7 @@ const utilitiesSection = document.querySelector("#utilitiesSection");
 const targetInput = document.querySelector("#targetInput");
 const replacementInput = document.querySelector("#replacementInput");
 const replaceButton = document.querySelector("#replace");
+const updateKOreportsButton = document.querySelector("#updateKOreports");
 
 const displaySection = document.querySelector("#displaySection");
 
@@ -521,6 +522,21 @@ replaceButton.addEventListener("click", async () => {
     }
   }
   replaceButton.disabled = false;
+});
+
+updateKOreportsButton.addEventListener("click", async () => {
+  updateKOreportsButton.disabled = true;
+  const oldKOReports = [...KOReports];
+  KOReports.length = 0;
+  for (var i = 0; i < oldKOReports.length; i++) {
+    KOTable.removeChild(KOTable.lastChild);
+  }
+  for (var i = 0; i < oldKOReports.length; i++) {
+    KOReports.add(oldKOReports[i].getUpdatedVersion(trackedPlaylists));
+  }
+  updateStoredData();
+  updateKOSectionDisplay();
+  updateKOreportsButton.disabled = false;
 });
 
 downloadReportsButton.addEventListener("click", () => {

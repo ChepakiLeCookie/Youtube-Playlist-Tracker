@@ -14,6 +14,24 @@ export class KOReport {
     this.position = comparisonReportItem.newPlaylistItem.position;
   }
 
+  getUpdatedVersion(playlists) {
+    var playlist;
+    var item;
+    for (var i = 0; i < playlists.length && !playlist; i++)
+      if (playlists[i].id == this.playlistId) {
+        playlist = playlists[i];
+        for (var i = 0; i < playlist.items.length && !item; i++)
+          if (playlist.items[i].id == this.videoId) {
+            item = playlist.items[i];
+            if (item.getStatus() != "Available") {
+              this.position = item.position;
+              return this;
+            }
+          }
+      }
+    globalThis.appLog.log("KO report was removed: " + this);
+  }
+
   static getDummy() {
     globalThis.appLog.log("bitch!!!!");
     var dummy = new KOReport();
