@@ -126,9 +126,11 @@ td {
   width: 105px;
 }
 .idCell,
+.videoIdCell,
 .playlistIdCell,
 .channelIdCell {
   font-size: 10px;
+  word-break: break-all;
 }
 td > a {
   color: #bff;
