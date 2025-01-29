@@ -29,7 +29,7 @@ export class KOReport {
             }
           }
       }
-    globalThis.appLog.log("KO report was removed: " + this);
+    globalThis.appLog.log("KO report was removed: " + JSON.stringify(this));
   }
 
   static getDummy() {
