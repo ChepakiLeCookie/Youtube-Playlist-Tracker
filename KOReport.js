@@ -5,6 +5,7 @@ export class KOReport {
   constructor(comparisonReportItem, playlistTitle) {
     if (!comparisonReportItem || !playlistTitle) return;
     this.playlistTitle = playlistTitle;
+    this.playlistId = comparisonReportItem.playlistId;
     this.currentStatus = comparisonReportItem.currentStatus;
     this.videoTitle = comparisonReportItem.oldPlaylistItem.title;
     this.videoId = comparisonReportItem.oldPlaylistItem.id;
@@ -17,6 +18,7 @@ export class KOReport {
     globalThis.appLog.log("bitch!!!!");
     var dummy = new KOReport();
     dummy.playlistTitle = "TITRE";
+    dummy.playlistId = "oUifjpohuopih65416";
     dummy.currentStatus = "comparisonReportItem.currentStatus";
     dummy.videoTitle = "comparisonReportItem.oldPlaylistItem.title";
     dummy.videoId = "comparisonReportItem.oldPlaylistItem.id";

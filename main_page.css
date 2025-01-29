@@ -104,6 +104,9 @@ td {
 .titleCell {
   width: 160px;
 }
+.playlistIdCell {
+  width: 70px;
+}
 .channelIdCell {
   width: 91px;
 }
@@ -123,8 +126,9 @@ td {
   width: 105px;
 }
 .idCell,
+.playlistIdCell,
 .channelIdCell {
-  font-size: 12px;
+  font-size: 10px;
 }
 td > a {
   color: #bff;

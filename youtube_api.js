@@ -244,7 +244,7 @@ export async function insertYoutubeVideo(
   );
   handleAPIresponse(
     response,
-    "Video couldn't be added from playlist: " +
+    "Video couldn't be added to playlist: " +
       JSON.stringify(await response.json())
   );
 }
@@ -255,7 +255,7 @@ export async function replacePlaylistItem(
   replacementVideoId,
   requestAuthParam
 ) {
-  // todo: old/new video exists
+  // todo: check old/new video exists
   await insertYoutubeVideo(playlistId, replacementVideoId, requestAuthParam);
   await deleteYoutubePlaylistItem(playlistId, targetVideoId, requestAuthParam);
 }

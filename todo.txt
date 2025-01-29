@@ -40,13 +40,13 @@ background = rows of "missing video" yt icons going left and right alternatively
 
 ///FEATURES
 "update all" button for the new KO reports -> checks every video and their playlist to see if 1: video is still in playlist or 2: video is still KO
+"remove duplicates from playlist" button
 tooltips for buttons
 region selector
 user guide
 add region used to reports metadata
 visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
 + log of API errors and other usefullnotificatons, like empty reports, etc..
-make videos that go from "blocked" to "deleted" into new KO reports?? idk how to make sense of that
 clear button next to slots
 manage session saving
 api requests counter !!!

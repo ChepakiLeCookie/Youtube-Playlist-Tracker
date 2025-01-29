@@ -104,15 +104,18 @@
           <div id="tracked-playlists"></div>
         </div>
       </details>
-      <details open="" id="replaceSection">
-        <summary>Replace in all playlists</summary>
+      <details open="" id="utilitiesSection">
+        <summary>Playlist utilities</summary>
         <div class="flexColContainer">
+          <p>Replace in all playlists</p>
           <input type="text" placeholder="Target" id="targetInput" /><input
             type="text"
             placeholder="Replacement"
             id="replacementInput"
           />
           <button id="replace">Replace video</button>
+          <p>Update all "new KO reports"</p>
+          <button id="updateKOreports">Update</button>
         </div>
       </details>
     </aside>
@@ -123,6 +126,7 @@
           <table id="KOTable">
             <tr>
               <th class="playlistTitleCol">Playlist title</th>
+              <th class="playlistIdCol">Playlist ID</th>
               <th class="currentStatusCol">Current status</th>
               <th class="titleCol">Video Title</th>
               <th class="idCol">Video ID</th>

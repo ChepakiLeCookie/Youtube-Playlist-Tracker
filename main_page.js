@@ -33,7 +33,7 @@ const reportsTable = document.querySelector("#reportsTable");
 const logSection = document.querySelector("#logSection");
 const logDiv = document.querySelector("#logDiv");
 
-const replaceSection = document.querySelector("#replaceSection");
+const utilitiesSection = document.querySelector("#utilitiesSection");
 const targetInput = document.querySelector("#targetInput");
 const replacementInput = document.querySelector("#replacementInput");
 const replaceButton = document.querySelector("#replace");
@@ -140,7 +140,7 @@ window.history.replaceState(null, "", window.location.pathname);
 // DISPLAY UPDATES
 
 function updateTrackedPlaylistDisplay() {
-  trackedPlaylistsSection.style.display = replaceSection.style.display =
+  trackedPlaylistsSection.style.display = utilitiesSection.style.display =
     trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
