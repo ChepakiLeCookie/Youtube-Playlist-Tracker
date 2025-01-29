@@ -532,7 +532,7 @@ updateKOreportsButton.addEventListener("click", async () => {
     KOTable.removeChild(KOTable.lastChild);
   }
   for (var i = 0; i < oldKOReports.length; i++) {
-    KOReports.add(oldKOReports[i].getUpdatedVersion(trackedPlaylists));
+    KOReports.push(oldKOReports[i].getUpdatedVersion(trackedPlaylists));
   }
   updateStoredData();
   updateKOSectionDisplay();
