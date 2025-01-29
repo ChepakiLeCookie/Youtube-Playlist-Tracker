@@ -14,7 +14,7 @@ export class KOReport {
     this.position = comparisonReportItem.newPlaylistItem.position;
   }
 
-  getUpdatedVersion(playlists) {
+  getUpdatedVersion(playlists, currentRegion) {
     var playlist;
     var item;
     for (var i = 0; i < playlists.length && !playlist; i++)
@@ -23,7 +23,7 @@ export class KOReport {
         for (var i = 0; i < playlist.items.length && !item; i++)
           if (playlist.items[i].id == this.videoId) {
             item = playlist.items[i];
-            if (item.getStatus() != "Available") {
+            if (item.getStatus(currentRegion) != "Available") {
               this.position = item.position;
               return this;
             }
