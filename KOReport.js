@@ -2,10 +2,10 @@ import { HTMLTableRowOf } from "./utils.js";
 
 // Simplified comparison report of new KOs
 export class KOReport {
-  constructor(comparisonReportItem, playlistTitle) {
+  constructor(comparisonReportItem, playlistTitle, playlistId) {
     if (!comparisonReportItem || !playlistTitle) return;
     this.playlistTitle = playlistTitle;
-    this.playlistId = comparisonReportItem.playlistId;
+    this.playlistId = playlistId;
     this.currentStatus = comparisonReportItem.currentStatus;
     this.videoTitle = comparisonReportItem.oldPlaylistItem.title;
     this.videoId = comparisonReportItem.oldPlaylistItem.id;

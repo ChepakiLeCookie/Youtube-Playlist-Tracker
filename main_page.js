@@ -219,7 +219,9 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
       );
       const newKOs = comparisonReport.getNewKOsOnly();
       for (var j = 0; j < newKOs.length; j++) {
-        KOReports.push(new KOReport(newKOs[j], newPlaylist.title));
+        KOReports.push(
+          new KOReport(newKOs[j], newPlaylist.title, newPlaylist.id)
+        );
       }
       var anomalies_number = anomaliesReport.items.length;
       if (fetchingAll) {
