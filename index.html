@@ -15,11 +15,11 @@
           <input
             hidden
             type="file"
-            id="backupImport"
+            id="backupImportInput"
             name="backupImport"
             accept=".json"
           />
-          <button id="connect">Connect</button>
+          <button id="connectButton">Connect</button>
 
           <div class="flexRowContainer">
             <input
@@ -41,12 +41,12 @@
         <summary>Get playlists</summary>
         <div class="flexColContainer">
           <div class="flexRowContainer">
-            <button id="fetch">Fetch</button>
-            <button id="import">Import</button>
+            <button id="fetchButton">Fetch</button>
+            <button id="importButton">Import</button>
             <input
               hidden
               type="file"
-              id="csvImport"
+              id="csvImportInput"
               name="csvImport"
               accept=".csv"
             />
@@ -60,23 +60,12 @@
             />
             <p id="titleArea">title</p>
             <p id="playlistArea">playlist content</p>
-            <button disabled id="analyse">Analyse</button>
+            <button disabled id="analyseButton">Analyse</button>
             <div class="flexRowContainer">
-              <button id="export">Export</button>
-              <button id="track">Track</button>
+              <button id="exportButton">Export</button>
+              <button id="trackButton">Track</button>
             </div>
           </div>
-          <div class="redbox flexRowContainer" id="compareDiv">
-            <div id="slot1">
-              <button disabled id="load1">load</button>
-              <p id="slot1StateDisplay">Slot 1 empty</p>
-            </div>
-            <div id="slot2">
-              <button disabled id="load2">load</button>
-              <p id="slot2StateDisplay">Slot 2 empty</p>
-            </div>
-          </div>
-          <button disabled id="compare">Compare</button>
         </div>
       </details>
       <details open="" id="reportsSection">
@@ -103,12 +92,12 @@
         <summary>Tracked playlists</summary>
         <div class="flexColContainer">
           <div class="flexRowContainer">
-            <button id="fetch-all">Fetch all</button>
-            <button disabled id="downloadReports">
-              Download reports (<span id="reportsAmount">0</span>)
+            <button id="fetchAllButton">Fetch all</button>
+            <button disabled id="downloadReportsButton">
+              Download reports (<span id="pendingReportsAmountSpan">0</span>)
             </button>
           </div>
-          <div id="tracked-playlists"></div>
+          <div id="trackedPlaylistsDiv"></div>
         </div>
       </details>
       <details open="" id="utilitiesSection">
@@ -120,9 +109,9 @@
             placeholder="Replacement"
             id="replacementInput"
           />
-          <button id="replace">Replace video</button>
+          <button id="replaceButton">Replace video</button>
           <p>Update all "new KO reports"</p>
-          <button id="updateKOreports">Update</button>
+          <button id="updateKOreportsButton">Update</button>
         </div>
       </details>
     </aside>

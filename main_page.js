@@ -16,64 +16,17 @@ window.customElements.define("playlist-card", PlaylistCardElement);
 
 // GET HTML ELEMENTS
 
-const regionInput = document.querySelector("#regionInput");
-const trackedPlaylistsDiv = document.querySelector("#tracked-playlists");
-const fetchAllButton = document.querySelector("#fetch-all");
-const trackedPlaylistsSection = document.querySelector(
-  "#trackedPlaylistsSection"
-);
-const downloadReportsButton = document.querySelector("#downloadReports");
-const pendingReportsAmountSpan = document.querySelector("#reportsAmount");
+const elementsWithIds = document.querySelectorAll('[id]:not([id=""])');
+const elmtsById = {};
 
-const KOSection = document.querySelector("#KOSection");
-const KOTable = document.querySelector("#KOTable");
-
-const reportsSection = document.querySelector("#reportsSection");
-const reportsTable = document.querySelector("#reportsTable");
-
-const logSection = document.querySelector("#logSection");
-const logDiv = document.querySelector("#logDiv");
-
-const utilitiesSection = document.querySelector("#utilitiesSection");
-const targetInput = document.querySelector("#targetInput");
-const replacementInput = document.querySelector("#replacementInput");
-const replaceButton = document.querySelector("#replace");
-const updateKOreportsButton = document.querySelector("#updateKOreports");
-
-const displaySection = document.querySelector("#displaySection");
-
-const apiKeyInput = document.querySelector("#apiKeyInput");
-const authStateArea = document.querySelector("#authStateArea");
-
-const saveButton = document.querySelector("#saveButton");
-const loadButton = document.querySelector("#loadButton");
-const backupImportElement = document.querySelector("#backupImport");
-const connectButton = document.querySelector("#connect");
-const fetchButton = document.querySelector("#fetch");
-const importButton = document.querySelector("#import");
-const exportButton = document.querySelector("#export");
-const trackButton = document.querySelector("#track");
-
-const loadButton1 = document.querySelector("#load1");
-const loadButton2 = document.querySelector("#load2");
-const compareButton = document.querySelector("#compare");
-
-const slot1StateDisplay = document.querySelector("#slot1StateDisplay");
-const slot2StateDisplay = document.querySelector("#slot2StateDisplay");
-
-const analyseButton = document.querySelector("#analyse");
-
-const csvImportElement = document.querySelector("#csvImport");
-
-const titleArea = document.querySelector("#titleArea");
-const playlistArea = document.querySelector("#playlistArea");
-const playlistIdInput = document.querySelector("#playlistIdInput");
+for (var i = 0; i < elementsWithIds.length; i++) {
+  const elem = elementsWithIds[i];
+  elmtsById[elem.id] = elem;
+}
 
 // INITS
 
 var main_playlist;
-var slot1_playlist;
-var slot2_playlist;
 
 const pendingReports = [];
 
@@ -85,7 +38,7 @@ var requestAuthParam;
 const KOReports = [];
 const trackedPlaylists = [];
 
-const appLog = new AppLog(logDiv);
+const appLog = new AppLog(elmtsById.logDiv);
 globalThis.appLog = appLog;
 
 // LOCAL STORAGE
@@ -124,7 +77,7 @@ function updateStoredData() {
 }
 
 function saveStoredDataBackup() {
-  var backup = {};
+  const backup = {};
   backup.apiKey = localStorage.getItem("apiKey");
   backup.accessToken = localStorage.getItem("accessToken");
   backup.tokenExpirationDate = localStorage.getItem("tokenExpirationDate");
@@ -176,34 +129,34 @@ window.history.replaceState(null, "", window.location.pathname);
 // DISPLAY UPDATES
 
 function updateTrackedPlaylistDisplay() {
-  trackedPlaylistsSection.style.display = utilitiesSection.style.display =
-    trackedPlaylists.length == 0 ? "none" : "flex";
+  elmtsById.trackedPlaylistsSection.style.display =
+    elmtsById.utilitiesSection.style.display =
+      trackedPlaylists.length == 0 ? "none" : "flex";
 }
 
 function updateKOSectionDisplay() {
-  KOSection.style.display = KOReports.length == 0 ? "none" : "flex";
+  elmtsById.KOSection.style.display = KOReports.length == 0 ? "none" : "flex";
 }
 
 function updateReportsSectionDisplay() {
-  reportsSection.style.display = pendingReports.length == 0 ? "none" : "flex";
-  downloadReportsButton.disabled = pendingReports.length == 0;
-  pendingReportsAmountSpan.textContent = pendingReports.length;
+  elmtsById.reportsSection.style.display =
+    pendingReports.length == 0 ? "none" : "flex";
+  elmtsById.downloadReportsButton.disabled = pendingReports.length == 0;
+  elmtsById.pendingReportsAmountSpan.textContent = pendingReports.length;
 }
 
 function updateAuthSectionDisplay() {
-  apiKeyInput.value = api_key;
-  authStateArea.textContent = access_token
+  elmtsById.apiKeyInput.value = api_key;
+  elmtsById.authStateArea.textContent = access_token
     ? "Connected until: " + token_expiration_date
     : "Not connected";
 }
 
 function updateMainPlaylistDisplay() {
-  playlistArea.textContent = main_playlist.getCsvString();
-  playlistIdInput.value = main_playlist.id;
-  titleArea.textContent = main_playlist.title;
-  loadButton1.disabled = false;
-  loadButton2.disabled = false;
-  analyseButton.disabled = false;
+  elmtsById.playlistArea.textContent = main_playlist.getCsvString();
+  elmtsById.playlistIdInput.value = main_playlist.id;
+  elmtsById.titleArea.textContent = main_playlist.title;
+  elmtsById.analyseButton.disabled = false;
 }
 
 function updateRequestAuthParam() {
@@ -219,10 +172,10 @@ function updateRequestAuthParam() {
 }
 
 function displayReport(report) {
-  displaySection.children[1].replaceChildren(
+  elmtsById.displaySection.children[1].replaceChildren(
     report.getHTMLTable(requestAuthParam)
   );
-  displaySection.style.display = "flex";
+  elmtsById.displaySection.style.display = "flex";
 }
 
 updateRequestAuthParam();
@@ -235,6 +188,7 @@ updateAuthSectionDisplay();
 
 async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
   playlistCard.setAttribute("fetching-state", "fetching");
+  const region = elmtsById.regionInput.value;
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
       const oldPlaylist = trackedPlaylists[i];
@@ -246,12 +200,9 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
       const comparisonReport = new ComparisonReport(
         oldPlaylist,
         newPlaylist,
-        regionInput.value
+        region
       );
-      const anomaliesReport = new AnomaliesReport(
-        newPlaylist,
-        regionInput.value
-      );
+      const anomaliesReport = new AnomaliesReport(newPlaylist, region);
       const newKOs = comparisonReport.getNewKOsOnly();
       for (var j = 0; j < newKOs.length; j++) {
         KOReports.push(
@@ -285,7 +236,7 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
     if (trackedPlaylists[i].id == playlistId) {
       const report = new AnomaliesReport(
         trackedPlaylists[i],
-        regionInput.value
+        elmtsById.regionInput.value
       );
       pendingReports.push(report);
       updateReportsSectionDisplay();
@@ -299,8 +250,10 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
 function trackedPlaylistUntrack(playlistId) {
   const previousTrackedPlaylists = Array.from(trackedPlaylists);
   trackedPlaylists.length = 0;
-  while (trackedPlaylistsDiv.firstChild) {
-    trackedPlaylistsDiv.removeChild(trackedPlaylistsDiv.lastChild);
+  while (elmtsById.trackedPlaylistsDiv.firstChild) {
+    elmtsById.trackedPlaylistsDiv.removeChild(
+      elmtsById.trackedPlaylistsDiv.lastChild
+    );
   }
   for (var i = 0; i < previousTrackedPlaylists.length; i++) {
     if (previousTrackedPlaylists[i].id != playlistId)
@@ -316,7 +269,10 @@ function addPlaylistCardElementToDiv(playlist) {
     appLog.log("Attempt to add card element failed.");
     return;
   }
-  const anomaliesReport = new AnomaliesReport(playlist, regionInput.value);
+  const anomaliesReport = new AnomaliesReport(
+    playlist,
+    elmtsById.regionInput.value
+  );
   var anomalies_number = anomaliesReport.getCsvString().split("\n").length - 1;
   const playlistCardElement = new PlaylistCardElement(
     trackedPlaylistFetch,
@@ -329,7 +285,7 @@ function addPlaylistCardElementToDiv(playlist) {
   playlistCardElement.setAttribute("anomalies-number", anomalies_number);
   playlistCardElement.setAttribute("new-kos-number", 0);
 
-  trackedPlaylistsDiv.append(playlistCardElement);
+  elmtsById.trackedPlaylistsDiv.append(playlistCardElement);
 }
 
 for (var i = 0; i < trackedPlaylists.length; i++) {
@@ -359,7 +315,7 @@ function addKOReportToTable(KOReport, i) {
   KOReportElement.querySelector("button").addEventListener("click", () => {
     dismissKOReport(indexToRemove);
   });
-  KOTable.append(KOReportElement);
+  elmtsById.KOTable.append(KOReportElement);
 }
 
 for (var i = 0; i < KOReports.length; i++) {
@@ -385,7 +341,7 @@ function dismissKOReport(index) {
   const previousKOReports = Array.from(KOReports);
   KOReports.length = 0;
   for (var i = 0; i < previousKOReports.length; i++) {
-    KOTable.removeChild(KOTable.lastChild);
+    elmtsById.KOTable.removeChild(elmtsById.KOTable.lastChild);
   }
   for (var i = 0; i < previousKOReports.length; i++) {
     if (i != index) KOReports.push(previousKOReports[i]);
@@ -439,7 +395,7 @@ function addReportToTable(report) {
   downloadButtonCol.append(downloadButton);
   reportRowElement.append(downloadButtonCol);
 
-  reportsTable.append(reportRowElement);
+  elmtsById.reportsTable.append(reportRowElement);
 }
 
 function processReportPush(processedReport) {
@@ -458,34 +414,29 @@ pendingReports.push = function () {
 
 // EVENT LISTENERS
 
-apiKeyInput.addEventListener("input", () => {
-  api_key = apiKeyInput.value;
+elmtsById.apiKeyInput.addEventListener("input", () => {
+  api_key = elmtsById.apiKeyInput.value;
   localStorage.setItem("apiKey", api_key);
   updateRequestAuthParam();
 });
 
-fetchButton.addEventListener("click", async () => {
+elmtsById.fetchButton.addEventListener("click", async () => {
   main_playlist = await fetchYoutubePlaylist(
-    playlistIdInput.value,
-    playlistArea,
+    elmtsById.playlistIdInput.value,
+    elmtsById.playlistArea,
     requestAuthParam
   );
   updateMainPlaylistDisplay();
 });
 
-csvImportElement.addEventListener("change", async () => {
-  const [file] = csvImportElement.files;
+elmtsById.csvImportInput.addEventListener("change", async () => {
+  const [file] = elmtsById.csvImportInput.files;
   const reader = new FileReader();
   reader.addEventListener(
     "load",
     () => {
       main_playlist = Playlist.generateFromCsvString(reader.result);
       updateMainPlaylistDisplay();
-      if (slot1_playlist == undefined) {
-        loadButton1.click();
-      } else if (slot2_playlist == undefined) {
-        loadButton2.click();
-      }
     },
     false
   );
@@ -495,56 +446,35 @@ csvImportElement.addEventListener("change", async () => {
   }
 });
 
-importButton.addEventListener("click", async () => {
-  csvImportElement.click();
+elmtsById.importButton.addEventListener("click", async () => {
+  elmtsById.csvImportInput.click();
 });
 
-trackButton.addEventListener("click", async () => {
+elmtsById.trackButton.addEventListener("click", async () => {
   trackedPlaylists.push(main_playlist);
 });
 
-exportButton.addEventListener("click", async () => {
+elmtsById.exportButton.addEventListener("click", async () => {
   main_playlist.download();
 });
 
-loadButton1.addEventListener("click", () => {
-  slot1_playlist = main_playlist;
-  slot1StateDisplay.textContent = slot1_playlist.title + " has been loaded.";
-  if (slot2_playlist != undefined) compareButton.disabled = false;
+elmtsById.analyseButton.addEventListener("click", () => {
+  new AnomaliesReport(main_playlist, elmtsById.regionInput.value).download();
+  appLog.log(main_playlist.title + " has been analysed.");
 });
 
-loadButton2.addEventListener("click", () => {
-  slot2_playlist = main_playlist;
-  slot2StateDisplay.textContent = slot2_playlist.title + " has been loaded.";
-  if (slot1_playlist != undefined) compareButton.disabled = false;
-});
-
-analyseButton.addEventListener("click", () => {
-  new AnomaliesReport(main_playlist, regionInput.value).download();
-  slot1StateDisplay.textContent = main_playlist.title + " has been analysed.";
-});
-
-compareButton.addEventListener("click", () => {
-  new ComparisonReport(
-    slot1_playlist,
-    slot2_playlist,
-    regionInput.value
-  ).download();
-  slot1StateDisplay.textContent = "Playlists have been compared";
-});
-
-fetchAllButton.addEventListener("click", () => {
+elmtsById.fetchAllButton.addEventListener("click", () => {
   const playlistCards =
-    trackedPlaylistsDiv.getElementsByTagName("playlist-card");
+    elmtsById.trackedPlaylistsDiv.getElementsByTagName("playlist-card");
   for (var i = 0; i < playlistCards.length; i++) {
     playlistCards[i].fetchButton.click();
   }
 });
 
-replaceButton.addEventListener("click", async () => {
-  replaceButton.disabled = true;
-  var targetId = targetInput.value;
-  var replacementId = replacementInput.value;
+elmtsById.replaceButton.addEventListener("click", async () => {
+  elmtsById.replaceButton.disabled = true;
+  var targetId = elmtsById.targetInput.value;
+  var replacementId = elmtsById.replacementInput.value;
   for (var i = 0; i < trackedPlaylists.length; i++) {
     const playlist = trackedPlaylists[i];
     for (var j = 0; j < playlist.items.length; j++) {
@@ -558,27 +488,30 @@ replaceButton.addEventListener("click", async () => {
       }
     }
   }
-  replaceButton.disabled = false;
+  elmtsById.replaceButton.disabled = false;
 });
 
-updateKOreportsButton.addEventListener("click", async () => {
-  updateKOreportsButton.disabled = true;
+elmtsById.updateKOreportsButton.addEventListener("click", async () => {
+  elmtsById.updateKOreportsButton.disabled = true;
   const oldKOReports = [...KOReports];
   KOReports.length = 0;
   for (var i = 0; i < oldKOReports.length; i++) {
-    KOTable.removeChild(KOTable.lastChild);
+    elmtsById.KOTable.removeChild(elmtsById.KOTable.lastChild);
   }
   for (var i = 0; i < oldKOReports.length; i++) {
     KOReports.push(
-      oldKOReports[i].getUpdatedVersion(trackedPlaylists, regionInput.value)
+      oldKOReports[i].getUpdatedVersion(
+        trackedPlaylists,
+        elmtsById.regionInput.value
+      )
     );
   }
   updateStoredData();
   updateKOSectionDisplay();
-  updateKOreportsButton.disabled = false;
+  elmtsById.updateKOreportsButton.disabled = false;
 });
 
-downloadReportsButton.addEventListener("click", () => {
+elmtsById.downloadReportsButton.addEventListener("click", () => {
   for (var i = 0; i < pendingReports.length; i++) {
     pendingReports[i].download();
   }
@@ -586,15 +519,15 @@ downloadReportsButton.addEventListener("click", () => {
   updateReportsSectionDisplay();
 });
 
-saveButton.addEventListener("click", () => {
+elmtsById.saveButton.addEventListener("click", () => {
   saveStoredDataBackup();
 });
-loadButton.addEventListener("click", () => {
-  backupImportElement.click();
+elmtsById.loadButton.addEventListener("click", () => {
+  elmtsById.backupImportInput.click();
 });
 
-backupImportElement.addEventListener("change", async () => {
-  const [file] = backupImportElement.files;
+elmtsById.backupImportInput.addEventListener("change", async () => {
+  const [file] = elmtsById.backupImportInput.files;
   const reader = new FileReader();
   reader.addEventListener(
     "load",
@@ -609,6 +542,6 @@ backupImportElement.addEventListener("change", async () => {
   }
 });
 
-connectButton.addEventListener("click", async () => {
+elmtsById.connectButton.addEventListener("click", async () => {
   oauthSignIn();
 });
