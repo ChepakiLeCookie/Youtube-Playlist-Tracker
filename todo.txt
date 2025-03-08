@@ -39,30 +39,25 @@ anomalies:
 background = rows of "missing video" yt icons going left and right alternatively 
 
 ///FEATURES
-"update all" button for the new KO reports -> checks every video and their playlist to see if 1: video is still in playlist or 2: video is still KO
-"remove duplicates from playlist" button
-tooltips for buttons
-region selector
-user guide
-add region used to reports metadata
-visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
-+ log of API errors and other usefullnotificatons, like empty reports, etc..
-clear button next to slots
 manage session saving
-api requests counter !!!
-youtube kids?
-+++
-automatiser le fait de backup une fois par ...
+user guide
+region selector
+tooltips for buttons
+visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
 rechercher un id sur le web pour identifier vidéo
+youtube kids?
+api requests counter !!!
+add region used to reports metadata
+"remove duplicates from playlist" button
 
 //SECURITY
-encrypt youtube apikey and client access token 
+? encrypt youtube apikey and client access token  
 
 ///PERFORMANCE
-comparison: instead of checking all the new video ides, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
+playlist comparison: instead of checking all the new video ids, only checking the "new" new ones (warning; duplicates of olds might get caught in there)
 
 ///CODE-CLEANING
-use proxies for localStorage objects https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+? use proxies for localStorage objects https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 make someone check the usage of localstorage in general; how to handle undefined/null values?
 custom elements for tabbles?
 RAAAH: find better solution for displayed/stored "live" data like KOtable and tracked playlists
@@ -70,7 +65,7 @@ main page.js qguyvduiqsdbh
 (properly) handle errors
 error : playlist not found
 error: report empty!
-use real metadata instead of embeded if possible
+use real metadata instead of embeded if possible ( csv reports )
 ...make it typescript? probably good idea
 
 

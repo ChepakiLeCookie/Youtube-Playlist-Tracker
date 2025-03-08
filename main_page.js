@@ -8,8 +8,9 @@ import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
 import { KOReport } from "./KOReport.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
-import { HTMLTableRowOf } from "./utils.js";
+import { download, HTMLTableRowOf } from "./utils.js";
 import { AppLog } from "./AppLog.js";
+import { getFormatedStringDateTime } from "./utils.js";
 
 window.customElements.define("playlist-card", PlaylistCardElement);
 
@@ -44,7 +45,9 @@ const displaySection = document.querySelector("#displaySection");
 const apiKeyInput = document.querySelector("#apiKeyInput");
 const authStateArea = document.querySelector("#authStateArea");
 
-const debugButton = document.querySelector("#debug");
+const saveButton = document.querySelector("#saveButton");
+const loadButton = document.querySelector("#loadButton");
+const backupImportElement = document.querySelector("#backupImport");
 const connectButton = document.querySelector("#connect");
 const fetchButton = document.querySelector("#fetch");
 const importButton = document.querySelector("#import");
@@ -116,7 +119,39 @@ function updateStoredData() {
   localStorage.setItem("trackedPlaylists", JSON.stringify(trackedPlaylists));
   localStorage.setItem("KOReports", JSON.stringify(KOReports));
   localStorage.setItem("accessToken", access_token);
+  localStorage.setItem("tokenExpirationDate", token_expiration_date);
   localStorage.setItem("apiKey", api_key);
+}
+
+function saveStoredDataBackup() {
+  var backup = {};
+  backup.apiKey = localStorage.getItem("apiKey");
+  backup.accessToken = localStorage.getItem("accessToken");
+  backup.tokenExpirationDate = localStorage.getItem("tokenExpirationDate");
+  backup.trackedPlaylists = JSON.parse(
+    localStorage.getItem("trackedPlaylists")
+  );
+  backup.KOReports = JSON.parse(localStorage.getItem("KOReports"));
+  download(
+    JSON.stringify(backup),
+    "BACKUP_YTPlaylistTracker_" +
+      getFormatedStringDateTime(new Date()) +
+      ".json",
+    "json"
+  );
+}
+
+function loadStoredDataBackup(backup) {
+  if (!confirm("Import backup and overwrite current data?")) return;
+  localStorage.setItem(
+    "trackedPlaylists",
+    JSON.stringify(backup.trackedPlaylists)
+  );
+  localStorage.setItem("KOReports", JSON.stringify(backup.KOReports));
+  localStorage.setItem("accessToken", backup.accessToken);
+  localStorage.setItem("tokenExpirationDate", backup.tokenExpirationDate);
+  localStorage.setItem("apiKey", backup.apiKey);
+  window.location.reload();
 }
 
 // URL PARAMS
@@ -278,7 +313,7 @@ function trackedPlaylistUntrack(playlistId) {
 
 function addPlaylistCardElementToDiv(playlist) {
   if (!playlist || !playlist.title || !playlist.id) {
-    console.log("Attempt to add card element failed.");
+    appLog.log("Attempt to add card element failed.");
     return;
   }
   const anomaliesReport = new AnomaliesReport(playlist, regionInput.value);
@@ -309,7 +344,7 @@ function processPlaylistPush(processedPlaylist) {
 
 trackedPlaylists.push = function () {
   if (!arguments[0]) {
-    console.log("Push failed.");
+    appLog.log("Push failed. (Tracked playlists)");
     return;
   }
   Array.prototype.push.apply(this, arguments);
@@ -339,7 +374,7 @@ function processKOReportPush(processedKOReport) {
 
 KOReports.push = function () {
   if (!arguments[0]) {
-    console.log("Push failed.");
+    appLog.log("Push failed. (KO Reports)");
     return;
   }
   Array.prototype.push.apply(this, arguments);
@@ -414,7 +449,7 @@ function processReportPush(processedReport) {
 
 pendingReports.push = function () {
   if (!arguments[0]) {
-    console.log("Push failed.");
+    appLog.log("Push failed. (Reports)");
     return;
   }
   Array.prototype.push.apply(this, arguments);
@@ -551,10 +586,27 @@ downloadReportsButton.addEventListener("click", () => {
   updateReportsSectionDisplay();
 });
 
-debugButton.addEventListener("click", () => {
-  var dummy = KOReport.getDummy();
-  dummy.playlistTitle = KOReports.length;
-  KOReports.push(dummy);
+saveButton.addEventListener("click", () => {
+  saveStoredDataBackup();
+});
+loadButton.addEventListener("click", () => {
+  backupImportElement.click();
+});
+
+backupImportElement.addEventListener("change", async () => {
+  const [file] = backupImportElement.files;
+  const reader = new FileReader();
+  reader.addEventListener(
+    "load",
+    () => {
+      loadStoredDataBackup(JSON.parse(reader.result));
+    },
+    false
+  );
+
+  if (file) {
+    reader.readAsText(file);
+  }
 });
 
 connectButton.addEventListener("click", async () => {

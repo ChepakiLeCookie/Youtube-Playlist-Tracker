@@ -10,10 +10,17 @@
       <details open="" id="userSection">
         <summary>Set-up (API key - Region - Connexion)</summary>
         <div class="flexColContainer">
-          <div class="flexRowContainer">
-            <button id="debug">debug</button>
-            <button id="connect">Connect</button>
-          </div>
+          <button id="saveButton">Save data backup</button>
+          <button id="loadButton">Load data backup</button>
+          <input
+            hidden
+            type="file"
+            id="backupImport"
+            name="backupImport"
+            accept=".json"
+          />
+          <button id="connect">Connect</button>
+
           <div class="flexRowContainer">
             <input
               type="text"
@@ -36,6 +43,13 @@
           <div class="flexRowContainer">
             <button id="fetch">Fetch</button>
             <button id="import">Import</button>
+            <input
+              hidden
+              type="file"
+              id="csvImport"
+              name="csvImport"
+              accept=".csv"
+            />
           </div>
           <div class="redbox flexColContainer">
             <input
@@ -48,13 +62,6 @@
             <p id="playlistArea">playlist content</p>
             <button disabled id="analyse">Analyse</button>
             <div class="flexRowContainer">
-              <input
-                hidden
-                type="file"
-                id="csvImport"
-                name="csvImport"
-                accept=".csv"
-              />
               <button id="export">Export</button>
               <button id="track">Track</button>
             </div>
