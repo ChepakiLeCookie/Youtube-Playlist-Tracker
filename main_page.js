@@ -312,9 +312,12 @@ trackedPlaylists.push = function () {
 function addKOReportToTable(KOReport, i) {
   const KOReportElement = KOReport.getHTMLTableRow();
   var indexToRemove = i ? i : KOReports.length - 1;
-  KOReportElement.querySelector("button").addEventListener("click", () => {
-    dismissKOReport(indexToRemove);
-  });
+  KOReportElement.querySelector(".dismissButton").addEventListener(
+    "click",
+    () => {
+      dismissKOReport(indexToRemove);
+    }
+  );
   elmtsById.KOTable.append(KOReportElement);
 }
 

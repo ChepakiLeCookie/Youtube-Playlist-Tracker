@@ -51,6 +51,7 @@ export class KOReport {
     const buttonCol = document.createElement("td");
     const dismissButton = document.createElement("button");
     dismissButton.textContent = "Dismiss";
+    dismissButton.className = "dismissButton";
     buttonCol.append(dismissButton);
     tableRow.append(buttonCol);
     return tableRow;

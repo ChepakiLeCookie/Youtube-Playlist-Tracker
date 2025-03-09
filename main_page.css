@@ -98,8 +98,9 @@ td {
   padding: 2px;
 }
 
-.idCell {
-  width: 90px;
+.idCell,
+.videoIdCell {
+  width: 40px;
 }
 .titleCell {
   width: 160px;
@@ -131,6 +132,19 @@ td {
 .channelIdCell {
   font-size: 10px;
   word-break: break-all;
+}
+.idCell,
+.videoIdCell {
+  font-weight: 400;
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: #7f9;
+  cursor: pointer;
+}
+.idCell:hover,
+.videoIdCell:hover {
+  color: #1f3;
 }
 td > a {
   color: #bff;

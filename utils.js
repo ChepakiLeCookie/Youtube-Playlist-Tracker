@@ -118,22 +118,13 @@ export function HTMLTableRowOf(object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
       var val = object[key];
       var insideCell;
-      if (key == "id") {
-        insideCell =
-          "<a href=https://youtu.be/" +
-          val +
-          " class=" +
-          key +
-          "Cell>" +
-          val +
-          "</a>";
+      if (key == "id" || key == "videoId") {
+        insideCell = "<button class=" + key + "Cell>" + val + "</button>";
       } else if (key == "channelId") {
         insideCell =
           "<a href=https://www.youtube.com/channel/" +
           val +
-          " class=" +
-          key +
-          "Cell>" +
+          " class=channelIdCell>" +
           val +
           "</a>";
       } else {
@@ -143,6 +134,12 @@ export function HTMLTableRowOf(object) {
     }
   }
   tableRow.innerHTML = content;
+  const idButton = tableRow.querySelector(".idCell, .videoIdCell");
+  if (idButton) {
+    idButton.addEventListener("click", () => {
+      navigator.clipboard.writeText(idButton.textContent);
+    });
+  }
   return tableRow;
 }
 
