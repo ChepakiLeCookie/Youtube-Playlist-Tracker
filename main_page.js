@@ -8,7 +8,7 @@ import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
 import { KOReport } from "./KOReport.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
-import { download, HTMLTableRowOf } from "./utils.js";
+import { checkAndGetId, download, HTMLTableRowOf } from "./utils.js";
 import { AppLog } from "./AppLog.js";
 import { getFormatedStringDateTime } from "./utils.js";
 
@@ -424,8 +424,10 @@ elmtsById.apiKeyInput.addEventListener("input", () => {
 });
 
 elmtsById.fetchButton.addEventListener("click", async () => {
+  var id = checkAndGetId(elmtsById.playlistIdInput.value, "playlist");
+  if (!id) return;
   main_playlist = await fetchYoutubePlaylist(
-    elmtsById.playlistIdInput.value,
+    id,
     elmtsById.playlistArea,
     requestAuthParam
   );
@@ -476,8 +478,9 @@ elmtsById.fetchAllButton.addEventListener("click", () => {
 
 elmtsById.replaceButton.addEventListener("click", async () => {
   elmtsById.replaceButton.disabled = true;
-  var targetId = elmtsById.targetInput.value;
-  var replacementId = elmtsById.replacementInput.value;
+  var targetId = checkAndGetId(elmtsById.targetInput.value, "video");
+  var replacementId = checkAndGetId(elmtsById.replacementInput.value, "video");
+  if (!targetId || !replacementId) return;
   for (var i = 0; i < trackedPlaylists.length; i++) {
     const playlist = trackedPlaylists[i];
     for (var j = 0; j < playlist.items.length; j++) {
@@ -547,4 +550,8 @@ elmtsById.backupImportInput.addEventListener("change", async () => {
 
 elmtsById.connectButton.addEventListener("click", async () => {
   oauthSignIn();
+});
+
+elmtsById.debugButton.addEventListener("click", async () => {
+  appLog.log(checkAndGetId(elmtsById.playlistIdInput.value, "playlist"));
 });

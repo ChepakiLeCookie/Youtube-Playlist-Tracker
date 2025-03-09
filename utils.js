@@ -188,3 +188,30 @@ export function handleAPIresponse(response, errorMessage) {
     throw new Error(globalThis.appLog.log(errorMessage));
   }
 }
+
+export function checkAndGetId(string, expectedType) {
+  var result;
+  switch (expectedType) {
+    case "playlist":
+      result = string.split("list=").pop().slice(0, 34);
+      if (result.length == 34) return result;
+      break;
+    case "video":
+      result = string
+        .split("shorts/")
+        .pop()
+        .split("watch?v=")
+        .pop()
+        .slice(0, 11);
+      if (result.length == 11) return result;
+      break;
+    case "channel":
+      break; //unused and complicated
+    default:
+  }
+  globalThis.appLog.log("Invalid ID or link doesn't contain valid ID");
+}
+
+export function checkAccessTokenValidity(accessToken, tokenExpirationDate) {
+  if (accessToken && tokenExpirationDate > new Date()) return true;
+}
