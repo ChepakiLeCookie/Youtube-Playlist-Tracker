@@ -118,14 +118,20 @@ export function HTMLTableRowOf(object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
       var val = object[key];
       var insideCell;
+      var classAndVal = " class=" + key + "Cell>" + val;
       if (key == "id" || key == "videoId") {
-        insideCell = "<button class=" + key + "Cell>" + val + "</button>";
+        insideCell = "<button" + classAndVal + "</button>";
       } else if (key == "channelId") {
         insideCell =
           "<a href=https://www.youtube.com/channel/" +
           val +
-          " class=channelIdCell>" +
+          classAndVal +
+          "</a>";
+      } else if (key == "playlistId") {
+        insideCell =
+          "<a href=https://www.youtube.com/playlist?list=" +
           val +
+          classAndVal +
           "</a>";
       } else {
         insideCell = "<div class=" + key + "Cell>" + val + "</div>";
