@@ -186,8 +186,8 @@ updateAuthSectionDisplay();
 
 // GENERATE TRACKING SECTION
 
-async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
-  playlistCard.setAttribute("fetching-state", "fetching");
+async function trackedPlaylistUpdate(playlistId, playlistCard, updatingAll) {
+  playlistCard.setAttribute("updating-state", "updating");
   const region = elmtsById.regionInput.value;
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
@@ -210,7 +210,7 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
         );
       }
       var anomalies_number = anomaliesReport.items.length;
-      if (fetchingAll) {
+      if (updatingAll) {
         if (comparisonReport.items.length != 0)
           pendingReports.push(comparisonReport);
         pendingReports.push(newPlaylist);
@@ -228,7 +228,7 @@ async function trackedPlaylistFetch(playlistId, playlistCard, fetchingAll) {
     }
   }
   updateStoredData();
-  playlistCard.setAttribute("fetching-state", "done");
+  playlistCard.setAttribute("updating-state", "done");
 }
 
 function trackedPlaylistAnalyse(playlistId, playlistCard) {
@@ -275,7 +275,7 @@ function addPlaylistCardElementToDiv(playlist) {
   );
   var anomalies_number = anomaliesReport.getCsvString().split("\n").length - 1;
   const playlistCardElement = new PlaylistCardElement(
-    trackedPlaylistFetch,
+    trackedPlaylistUpdate,
     trackedPlaylistAnalyse,
     trackedPlaylistUntrack
   );
@@ -468,11 +468,11 @@ elmtsById.analyseButton.addEventListener("click", () => {
   appLog.log(main_playlist.title + " has been analysed.");
 });
 
-elmtsById.fetchAllButton.addEventListener("click", () => {
+elmtsById.updateAllButton.addEventListener("click", () => {
   const playlistCards =
     elmtsById.trackedPlaylistsDiv.getElementsByTagName("playlist-card");
   for (var i = 0; i < playlistCards.length; i++) {
-    playlistCards[i].fetchButton.click();
+    playlistCards[i].updateButton.click();
   }
 });
 

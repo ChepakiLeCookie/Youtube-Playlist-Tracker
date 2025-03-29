@@ -6,9 +6,9 @@ const html = await resp.text();
 template.innerHTML = html;
 
 class PlaylistCardElement extends HTMLElement {
-  constructor(fetchMethod, analyseMethod, untrackMethod) {
+  constructor(updateMethod, analyseMethod, untrackMethod) {
     super();
-    this.fetch = fetchMethod;
+    this.update = updateMethod;
     this.untrack = untrackMethod;
     this.analyse = analyseMethod;
     this.attachShadow({ mode: "open" });
@@ -21,7 +21,7 @@ class PlaylistCardElement extends HTMLElement {
       ".pl-anomalies-number"
     );
     this.kosElement = this.shadowRoot.querySelector(".pl-new-KOs-number");
-    this.fetchButton = this.shadowRoot.querySelector(".fetch");
+    this.updateButton = this.shadowRoot.querySelector(".update");
     this.analyseButton = this.shadowRoot.querySelector(".analyse");
     this.untrackButton = this.shadowRoot.querySelector(".untrack");
   }
@@ -33,7 +33,7 @@ class PlaylistCardElement extends HTMLElement {
       "backup-date",
       "anomalies-number",
       "new-kos-number",
-      "fetching-state",
+      "updating-state",
     ];
   }
 
@@ -59,11 +59,11 @@ class PlaylistCardElement extends HTMLElement {
       case "new-kos-number":
         this.kosElement.innerText = newValue;
         break;
-      case "fetching-state":
-        if (newValue == "fetching") {
-          this.fetchButton.disabled = true;
+      case "updating-state":
+        if (newValue == "updating") {
+          this.updateButton.disabled = true;
         } else {
-          this.fetchButton.disabled = false;
+          this.updateButton.disabled = false;
         }
         break;
     }
@@ -85,8 +85,8 @@ class PlaylistCardElement extends HTMLElement {
     this.analyseButton.addEventListener("click", () => {
       this.analyse(this.getAttribute("playlist-id"), this);
     });
-    this.fetchButton.addEventListener("click", () => {
-      this.fetch(this.getAttribute("playlist-id"), this, true);
+    this.updateButton.addEventListener("click", () => {
+      this.update(this.getAttribute("playlist-id"), this, true);
     });
   }
 

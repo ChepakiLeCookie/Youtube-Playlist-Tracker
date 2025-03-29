@@ -1,22 +1,3 @@
-"https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=" +
-        pageMaxResult +
-        "&pageToken=" +
-        (nextPageToken != null ? nextPageToken : "") +
-        "&playlistId=" +
-        playlistId +
-        "&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4"
-
-https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&part=contentDetails&maxResults=50&pageToken=&playlistId=&key=AIzaSyC7hyII1BTSZqajBaGxQZTtAvkPj8sozn4
-
-https://accounts.google.com/o/oauth2/v2/auth?
-scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube&
-include_granted_scopes=true&
-state=state_parameter_passthrough_value&
-redirect_uri=https://chepakilecookie.github.io/Youtube-Playlist-Tracker&
-response_type=token&
-client_id=116365897040-jmu3p8uo4h677a9ev57uag1fqruq274t.apps.googleusercontent.com
-
-https://youtube.googleapis.com/youtube/v3/playlistItems?maxResults=1&pageToken=&playlistId=PL_J_-lm9blC5_hKEJaTh-C5850rWg77IM&videoId=oY079oVS3Nc&access_token=ya29.a0AcM612zLjBw-uXxPSAXhT5yW9oHNlJ4lSBeGIT4uc5fyVqRanl2H7BLtCVHzzYMu5hM9zquCXHR1UBSXrs0hN5cxfBgRuiDjedIigCKP97ZNEphFCtwQHu9QevnfluFPch9YdD4r12Ks1mmhjJogcUd4yiE0OAL0PtAaCgYKAR4SARMSFQHGX2Mi5oDpjXQQ6SajQl-qHSWLOQ0170
 
 comparaison = 5 categories ( -> not changed ~> changed)
     - removed || step 1
@@ -35,14 +16,11 @@ anomalies:
     - blocked in current country
     - duplicate videos
 
-//VISUALS
-background = rows of "missing video" yt icons going left and right alternatively 
-
 ///FEATURES
-manage session saving
+next to display summary, show name of what is being displayed
 user guide
-region selector
 tooltips for buttons
+region selector
 visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
 rechercher un id sur le web pour identifier vidéo
 youtube kids?
