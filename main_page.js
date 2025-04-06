@@ -231,6 +231,15 @@ async function trackedPlaylistUpdate(playlistId, playlistCard, updatingAll) {
   playlistCard.setAttribute("updating-state", "done");
 }
 
+function trackedPlaylistDisplay(playlistId) {
+  for (var i = 0; i < trackedPlaylists.length; i++) {
+    if (trackedPlaylists[i].id == playlistId) {
+      displayReport(trackedPlaylists[i]);
+      return;
+    }
+  }
+}
+
 function trackedPlaylistAnalyse(playlistId, playlistCard) {
   for (var i = 0; i < trackedPlaylists.length; i++) {
     if (trackedPlaylists[i].id == playlistId) {
@@ -276,6 +285,7 @@ function addPlaylistCardElementToDiv(playlist) {
   var anomalies_number = anomaliesReport.getCsvString().split("\n").length - 1;
   const playlistCardElement = new PlaylistCardElement(
     trackedPlaylistUpdate,
+    trackedPlaylistDisplay,
     trackedPlaylistAnalyse,
     trackedPlaylistUntrack
   );

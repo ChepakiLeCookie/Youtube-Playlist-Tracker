@@ -6,11 +6,12 @@ const html = await resp.text();
 template.innerHTML = html;
 
 class PlaylistCardElement extends HTMLElement {
-  constructor(updateMethod, analyseMethod, untrackMethod) {
+  constructor(updateMethod, displayMethod, analyseMethod, untrackMethod) {
     super();
     this.update = updateMethod;
-    this.untrack = untrackMethod;
+    this.display = displayMethod;
     this.analyse = analyseMethod;
+    this.untrack = untrackMethod;
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
@@ -22,6 +23,7 @@ class PlaylistCardElement extends HTMLElement {
     );
     this.kosElement = this.shadowRoot.querySelector(".pl-new-KOs-number");
     this.updateButton = this.shadowRoot.querySelector(".update");
+    this.displayButton = this.shadowRoot.querySelector(".display");
     this.analyseButton = this.shadowRoot.querySelector(".analyse");
     this.untrackButton = this.shadowRoot.querySelector(".untrack");
   }
@@ -79,14 +81,17 @@ class PlaylistCardElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.untrackButton.addEventListener("click", () => {
-      this.untrack(this.getAttribute("playlist-id"));
+    this.updateButton.addEventListener("click", () => {
+      this.update(this.getAttribute("playlist-id"), this, true);
+    });
+    this.displayButton.addEventListener("click", () => {
+      this.display(this.getAttribute("playlist-id"));
     });
     this.analyseButton.addEventListener("click", () => {
       this.analyse(this.getAttribute("playlist-id"), this);
     });
-    this.updateButton.addEventListener("click", () => {
-      this.update(this.getAttribute("playlist-id"), this, true);
+    this.untrackButton.addEventListener("click", () => {
+      this.untrack(this.getAttribute("playlist-id"));
     });
   }
 
