@@ -205,8 +205,10 @@ async function trackedPlaylistUpdate(playlistId, playlistCard, updatingAll) {
       const anomaliesReport = new AnomaliesReport(newPlaylist, region);
       const newKOs = comparisonReport.getNewKOsOnly();
       for (var j = 0; j < newKOs.length; j++) {
-        KOReports.push(
-          new KOReport(newKOs[j], newPlaylist.title, newPlaylist.id)
+        var newKO = newKOs[j];
+        KOReports.push(new KOReport(newKO, newPlaylist.title, newPlaylist.id));
+        appLog.log(
+          "New KO: " + newKO.currentStatus + " | " + newKO.oldPlaylistItem.title
         );
       }
       var anomalies_number = anomaliesReport.items.length;
