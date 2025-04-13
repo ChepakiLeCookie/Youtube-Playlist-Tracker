@@ -60,6 +60,10 @@ export class Playlist {
     return table;
   }
 
+  getReportTitle() {
+    return this.title;
+  }
+
   download() {
     download(
       this.getCsvString(),

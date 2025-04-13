@@ -120,6 +120,10 @@ export class ComparisonReport {
     return table;
   }
 
+  getReportTitle() {
+    return this.oldPlaylist.title + " - Comparaison report";
+  }
+
   download() {
     if (this.items.length == 0) return "No items in this report.";
     download(

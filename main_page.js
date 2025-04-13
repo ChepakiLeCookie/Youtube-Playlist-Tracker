@@ -175,6 +175,8 @@ function displayReport(report) {
   elmtsById.displaySection.children[1].replaceChildren(
     report.getHTMLTable(requestAuthParam)
   );
+
+  elmtsById.displayName.innerText = " - " + report.getReportTitle();
   elmtsById.displaySection.style.display = "flex";
 }
 
