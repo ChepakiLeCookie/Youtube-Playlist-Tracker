@@ -261,6 +261,12 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
 }
 
 function trackedPlaylistUntrack(playlistId) {
+  if (
+    !confirm(
+      "Stop tracking this playlist? It's current backup won't be stored anymore."
+    )
+  )
+    return;
   const previousTrackedPlaylists = Array.from(trackedPlaylists);
   trackedPlaylists.length = 0;
   while (elmtsById.trackedPlaylistsDiv.firstChild) {

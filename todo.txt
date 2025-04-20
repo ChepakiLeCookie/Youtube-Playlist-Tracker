@@ -17,7 +17,6 @@ anomalies:
     - duplicate videos
 
 ///FEATURES
-next to display summary, show name of what is being displayed
 user guide
 tooltips for buttons
 region selector
