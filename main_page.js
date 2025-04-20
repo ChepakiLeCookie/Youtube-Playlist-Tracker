@@ -141,8 +141,6 @@ function updateKOSectionDisplay() {
 function updateReportsSectionDisplay() {
   elmtsById.reportsSection.style.display =
     pendingReports.length == 0 ? "none" : "flex";
-  elmtsById.downloadReportsButton.disabled = pendingReports.length == 0;
-  elmtsById.pendingReportsAmountSpan.textContent = pendingReports.length;
 }
 
 function updateAuthSectionDisplay() {
@@ -538,14 +536,6 @@ elmtsById.updateKOreportsButton.addEventListener("click", async () => {
   updateStoredData();
   updateKOSectionDisplay();
   elmtsById.updateKOreportsButton.disabled = false;
-});
-
-elmtsById.downloadReportsButton.addEventListener("click", () => {
-  for (var i = 0; i < pendingReports.length; i++) {
-    pendingReports[i].download();
-  }
-  pendingReports.length = 0;
-  updateReportsSectionDisplay();
 });
 
 elmtsById.saveButton.addEventListener("click", () => {
