@@ -18,6 +18,7 @@ class PlaylistCardElement extends HTMLElement {
     this.titleElement = this.shadowRoot.querySelector(".pl-card-title");
     this.idElement = this.shadowRoot.querySelector(".pl-card-id");
     this.dateElement = this.shadowRoot.querySelector(".pl-card-date");
+    this.videosElement = this.shadowRoot.querySelector(".pl-videos-number");
     this.anomaliesElement = this.shadowRoot.querySelector(
       ".pl-anomalies-number"
     );
@@ -33,6 +34,7 @@ class PlaylistCardElement extends HTMLElement {
       "playlist-title",
       "playlist-id",
       "backup-date",
+      "videos-number",
       "anomalies-number",
       "new-kos-number",
       "updating-state",
@@ -54,6 +56,9 @@ class PlaylistCardElement extends HTMLElement {
       case "backup-date":
         this.dateElement.innerText =
           "Last backup: " + getReadableStringDateTime(newValue);
+        break;
+      case "videos-number":
+        this.videosElement.innerText = newValue;
         break;
       case "anomalies-number":
         this.anomaliesElement.innerText = newValue;

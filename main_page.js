@@ -226,6 +226,7 @@ async function trackedPlaylistUpdate(playlistId, playlistCard, updatingAll) {
       playlistCard.setAttribute("new-kos-number", newKOs.length);
       playlistCard.setAttribute("playlist-title", newPlaylist.title);
       playlistCard.setAttribute("backup-date", newPlaylist.date);
+      playlistCard.setAttribute("videos-number", newPlaylist.items.length);
       playlistCard.setAttribute("anomalies-number", anomalies_number);
 
       trackedPlaylists[i] = newPlaylist;
@@ -253,7 +254,6 @@ function trackedPlaylistAnalyse(playlistId, playlistCard) {
       );
       pendingReports.push(report);
       updateReportsSectionDisplay();
-      playlistCard.setAttribute("anomalies-number", "Analysed.");
       displayReport(report);
       return;
     }
@@ -292,7 +292,6 @@ function addPlaylistCardElementToDiv(playlist) {
     playlist,
     elmtsById.regionInput.value
   );
-  var anomalies_number = anomaliesReport.getCsvString().split("\n").length - 1;
   const playlistCardElement = new PlaylistCardElement(
     trackedPlaylistUpdate,
     trackedPlaylistDisplay,
@@ -302,7 +301,11 @@ function addPlaylistCardElementToDiv(playlist) {
   playlistCardElement.setAttribute("playlist-title", playlist.title);
   playlistCardElement.setAttribute("playlist-id", playlist.id);
   playlistCardElement.setAttribute("backup-date", playlist.date);
-  playlistCardElement.setAttribute("anomalies-number", anomalies_number);
+  playlistCardElement.setAttribute("videos-number", playlist.items.length);
+  playlistCardElement.setAttribute(
+    "anomalies-number",
+    anomaliesReport.items.length
+  );
   playlistCardElement.setAttribute("new-kos-number", 0);
 
   elmtsById.trackedPlaylistsDiv.append(playlistCardElement);
