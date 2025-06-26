@@ -17,10 +17,12 @@ anomalies:
     - duplicate videos
 
 ///FEATURES
+!!! after each update, log of removed video, to watch for weird cases
 user guide
 tooltips for buttons
 region selector
-visual log of everything done in the app ( ex: fetched playlist, dismised new KO, downloaded report, etc... )
+better separation of log messages
+more log messages ( api request success like yt removing )
 rechercher un id sur le web pour identifier vidéo
 youtube kids?
 api requests counter !!!
