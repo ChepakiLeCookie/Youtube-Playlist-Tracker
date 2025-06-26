@@ -8,7 +8,12 @@ import { ComparisonReport } from "./ComparisonReport.js";
 import { AnomaliesReport } from "./AnomaliesReport.js";
 import { KOReport } from "./KOReport.js";
 import PlaylistCardElement from "./PlaylistCardElement.js";
-import { checkAndGetId, download, HTMLTableRowOf } from "./utils.js";
+import {
+  checkAndGetId,
+  download,
+  getFoobarScript,
+  HTMLTableRowOf,
+} from "./utils.js";
 import { AppLog } from "./AppLog.js";
 import { getFormatedStringDateTime } from "./utils.js";
 
@@ -566,5 +571,5 @@ elmtsById.connectButton.addEventListener("click", async () => {
 });
 
 elmtsById.debugButton.addEventListener("click", async () => {
-  appLog.log(checkAndGetId(elmtsById.playlistIdInput.value, "playlist"));
+  download(getFoobarScript(trackedPlaylists), "script.bat", "txt");
 });

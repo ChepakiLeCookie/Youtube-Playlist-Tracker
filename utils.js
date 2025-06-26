@@ -215,3 +215,65 @@ export function checkAndGetId(string, expectedType) {
 export function checkAccessTokenValidity(accessToken, tokenExpirationDate) {
   if (accessToken && tokenExpirationDate > new Date()) return true;
 }
+
+function getEveryVideo(playlists) {
+  const every_video = {};
+  for (var i = 0; i < playlists.length; i++) {
+    var playlist = playlists[i];
+    for (var j = 0; j < playlist.items.length; j++) {
+      var playlistItem = playlist.items[j];
+      if (
+        playlistItem.title != "Deleted video" &&
+        playlistItem.title != "Private video"
+      ) {
+        if (!every_video[playlistItem.title]) {
+          every_video[playlistItem.title] = {};
+          every_video[playlistItem.title].playlists = [];
+          every_video[playlistItem.title].ids = [];
+        }
+        every_video[playlistItem.title].playlists.push(playlist.title);
+        if (!every_video[playlistItem.title].ids.includes(playlistItem.id))
+          every_video[playlistItem.title].ids.push(playlistItem.id);
+      }
+    }
+  }
+  return every_video;
+}
+
+function getVideosWithSameTitles(every_video) {
+  const every_duplicate_title = {};
+
+  for (var key in every_video) {
+    if (Object.prototype.hasOwnProperty.call(every_video, key)) {
+      if (every_video[key].ids.length > 1) {
+        every_duplicate_title[key] = every_video[key];
+      }
+    }
+  }
+
+  return every_duplicate_title;
+}
+
+export function getFoobarScript(playlists) {
+  var script = "";
+  const every_video = getEveryVideo(playlists);
+  const every_duplicate_title = getVideosWithSameTitles(every_video);
+  console.log(every_video);
+  console.log(every_duplicate_title);
+
+  for (var key in every_video) {
+    var line = '"C:\\Program Files\\foobar2000\\foobar2000.exe" /tag:tags="';
+    if (Object.prototype.hasOwnProperty.call(every_video, key)) {
+      for (var i = 0; i < every_video[key].playlists.length; i++) {
+        line += every_video[key].playlists[i] + "\\";
+      }
+      var key_no_quotes = key.replaceAll('"', "＂");
+      line = line.slice(0, -1) + '" "' + key_no_quotes + '.mp3"\n';
+      script += line;
+    }
+  }
+
+  return script;
+}
+
+// ('"C:\\Program Files\\foobar2000\\foobar2000.exe" /tag:tags="betifu\\mr   pre\\tty" "Flow.mp3" "Firebugs.mp3"');
