@@ -262,13 +262,19 @@ export function getFoobarScript(playlists) {
   console.log(every_duplicate_title);
 
   for (var key in every_video) {
-    var line = '"C:\\Program Files\\foobar2000\\foobar2000.exe" /tag:tags="';
+    var line = '& "C:\\Program Files\\foobar2000\\foobar2000.exe" /tag:tags="';
     if (Object.prototype.hasOwnProperty.call(every_video, key)) {
       for (var i = 0; i < every_video[key].playlists.length; i++) {
         line += every_video[key].playlists[i] + "\\";
       }
-      var key_no_quotes = key.replaceAll('"', "＂");
-      line = line.slice(0, -1) + '" "' + key_no_quotes + '.mp3"\n';
+      var key_clean = key
+        .replaceAll('"', "＂")
+        .replaceAll(":", "：")
+        .replaceAll("|", "｜")
+        .replaceAll("/", "⧸")
+        .replaceAll("?", "？")
+        .replaceAll("*", "＊");
+      line = line.slice(0, -1) + '" "' + key_clean + '.mp3"\n';
       script += line;
     }
   }
@@ -276,4 +282,6 @@ export function getFoobarScript(playlists) {
   return script;
 }
 
+// NOTE: Trying to run the script wont work because every non unicode character will be fucked up
+// Instead, just copy and paste the content of the script in windows powershell
 // ('"C:\\Program Files\\foobar2000\\foobar2000.exe" /tag:tags="betifu\\mr   pre\\tty" "Flow.mp3" "Firebugs.mp3"');
