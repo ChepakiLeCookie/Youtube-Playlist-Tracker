@@ -131,16 +131,16 @@ window.history.replaceState(null, "", window.location.pathname);
 function updateTrackedPlaylistDisplay() {
   elmtsById.trackedPlaylistsSection.style.display =
     elmtsById.utilitiesSection.style.display =
-      trackedPlaylists.length == 0 ? "none" : "flex";
+      trackedPlaylists.length == 0 ? "none" : "block";
 }
 
 function updateKOSectionDisplay() {
-  elmtsById.KOSection.style.display = KOReports.length == 0 ? "none" : "flex";
+  elmtsById.KOSection.style.display = KOReports.length == 0 ? "none" : "block";
 }
 
 function updateReportsSectionDisplay() {
   elmtsById.reportsSection.style.display =
-    pendingReports.length == 0 ? "none" : "flex";
+    pendingReports.length == 0 ? "none" : "block";
 }
 
 function updateAuthSectionDisplay() {
@@ -175,7 +175,7 @@ function displayReport(report) {
   );
 
   elmtsById.displayName.innerText = " - " + report.getReportTitle();
-  elmtsById.displaySection.style.display = "flex";
+  elmtsById.displaySection.style.display = "block";
 }
 
 updateRequestAuthParam();
