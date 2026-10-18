@@ -61,6 +61,7 @@ export async function fetchYoutubePlaylist(
     var responseContent = await response.json();
     var playlistItemsJson = responseContent.items;
 
+    if(playlistItemsJson.length == 0) break;
     // Loop that goes through each video of the page, to get all video IDs
     for (var i = 0; i < playlistItemsJson.length; i++) {
       var playlistItemJson = playlistItemsJson[i];
